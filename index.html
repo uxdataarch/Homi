@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homi - Iniciar Sesión</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #A9E5BB 0%, #5DA7E7 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: #FFFFFF;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .login-container {
+                padding: 60px 50px;
+            }
+
+            .logo {
+                width: 140px;
+                height: 140px;
+                font-size: 65px;
+            }
+
+            .app-name {
+                font-size: 42px;
+            }
+
+            .welcome-text {
+                font-size: 18px;
+            }
+
+            .form-input {
+                padding: 18px 22px;
+                font-size: 16px;
+            }
+
+            .login-btn {
+                padding: 18px;
+                font-size: 17px;
+            }
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #A9E5BB, #5DA7E7);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            box-shadow: 0 10px 30px rgba(93, 167, 231, 0.3);
+        }
+
+        .app-name {
+            font-size: 36px;
+            font-weight: 700;
+            color: #4A4A4A;
+            margin-bottom: 10px;
+        }
+
+        .welcome-text {
+            color: #4A4A4A;
+            font-size: 16px;
+            margin-bottom: 35px;
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            color: #4A4A4A;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #F2F2F2;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #4A4A4A;
+            background: #F2F2F2;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #5DA7E7;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(93, 167, 231, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #5DA7E7, #A9E5BB);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 8px 20px rgba(93, 167, 231, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(93, 167, 231, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            height: 1px;
+            background: #F2F2F2;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .links-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .link {
+            color: #5DA7E7;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .link:hover {
+            color: #4A4A4A;
+            text-decoration: underline;
+        }
+
+        .register-link {
+            color: #4A4A4A;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #5DA7E7;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 40px 25px;
+                border-radius: 20px;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+                font-size: 45px;
+            }
+
+            .app-name {
+                font-size: 30px;
+            }
+
+            .welcome-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">🏠</div>
+        <h1 class="app-name">Homi</h1>
+        <p class="welcome-text">Organiza tu hogar de manera simple</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="email">Correo electrónico</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="form-input" 
+                    placeholder="tu@email.com"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Contraseña</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="form-input" 
+                    placeholder="••••••••"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-btn">Iniciar sesión</button>
+        </form>
+
+        <div class="links-section">
+            <a href="#" class="link">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="register-link">
+            ¿No tienes cuenta? <a href="#">Regístrate aquí</a>
+        </p>
+    </div>
+
+    <script>
+        // Maneja el inicio de sesión
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Validación básica
+            if (email && password) {
+                // Por ahora redirige directamente a home.html
+                // Más adelante aquí validaremos con Firebase
+                console.log('Iniciando sesión con:', email);
+                
+                // Redirigir a la página principal
+                window.location.href = 'home.html';
+            } else {
+                alert('Por favor completa todos los campos');
+            }
+        });
+    </script>
+</body>
+</html>
