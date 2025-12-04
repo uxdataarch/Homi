@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homi - Finanzas del hogar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F2F2F2;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: #5DA7E7;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            font-size: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            padding: 5px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .logo-small {
+            width: 50px;
+            height: 50px;
+            background: #A9E5BB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-small:hover {
+            transform: scale(1.1);
+        }
+
+        /* Contenedor principal */
+        .finance-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Resumen financiero */
+        .summary-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .summary-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4A4A4A;
+            margin-bottom: 10px;
+        }
+
+        .summary-amount {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .amount-income {
+            color: #A9E5BB;
+        }
+
+        .amount-expense {
+            color: #ff6b6b;
+        }
+
+        .available-section {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #F2F2F2;
+        }
+
+        .available-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4A4A4A;
+            margin-bottom: 10px;
+        }
+
+        .available-amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #4A4A4A;
+        }
+
+        /* Botones de acción */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-income {
+            background: #A9E5BB;
+            color: white;
+        }
+
+        .btn-expense {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Últimos movimientos */
+        .movements-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .movements-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4A4A4A;
+            margin-bottom: 20px;
+        }
+
+        .movement-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #F2F2F2;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .movement-item:hover {
+            background: #e8e8e8;
+            transform: translateX(5px);
+        }
+
+        .movement-info {
+            flex: 1;
+        }
+
+        .movement-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4A4A4A;
+            margin-bottom: 5px;
+        }
+
+        .movement-details {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .movement-amount {
+            font-size: 22px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .amount-positive {
+            color: #A9E5BB;
+        }
+
+        .amount-negative {
+            color: #ff6b6b;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #4A4A4A;
+            padding: 0;
+            margin-right: 15px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4A4A4A;
+        }
+
+        /* Tipo toggle */
+        .type-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid #F2F2F2;
+            background: #F2F2F2;
+            color: #4A4A4A;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .type-btn.active-income {
+            background: #A9E5BB;
+            color: white;
+            border-color: #A9E5BB;
+        }
+
+        .type-btn.active-expense {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #4A4A4A;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #F2F2F2;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #4A4A4A;
+            background: #F2F2F2;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #5DA7E7;
+            background: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-save {
+            background: #A9E5BB;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 16px;
+            }
+
+            .summary-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .summary-amount {
+                font-size: 28px;
+            }
+
+            .available-amount {
+                font-size: 32px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .movement-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .movement-amount {
+                align-self: flex-end;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <button class="menu-btn" onclick="window.location.href='home.html'">☰</button>
+            <div class="header-title">
+                <span>💰</span>
+                <span>Finanzas del hogar</span>
+            </div>
+        </div>
+        <div class="logo-small" onclick="window.location.href='home.html'">
+            <img src="logo.png" alt="Homi" style="width: 70%; height: 70%; object-fit: contain; border-radius: 50%;">
+        </div>
+    </div>
+
+    <div class="finance-container">
+        <!-- Resumen financiero -->
+        <div class="summary-card">
+            <div class="summary-row">
+                <div class="summary-item">
+                    <div class="summary-label">Ingresos</div>
+                    <div class="summary-amount amount-income" id="totalIncome">$15,000</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Gastos</div>
+                    <div class="summary-amount amount-expense" id="totalExpense">$8,450</div>
+                </div>
+            </div>
+            <div class="available-section">
+                <div class="available-label">Disponible</div>
+                <div class="available-amount" id="available">$6,550</div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+            <button class="action-btn btn-income" onclick="openModal('ingreso')">
+                + Ingreso
+            </button>
+            <button class="action-btn btn-expense" onclick="openModal('gasto')">
+                + Gasto
+            </button>
+        </div>
+
+        <!-- Últimos movimientos -->
+        <div class="movements-section">
+            <h2 class="movements-title">Últimos movimientos</h2>
+
+            <div class="movement-item">
+                <div class="movement-info">
+                    <div class="movement-name">Salario</div>
+                    <div class="movement-details">
+                        <span>03/12/2024</span>
+                        <span>•</span>
+                        <span>Quincena</span>
+                    </div>
+                </div>
+                <div class="movement-amount amount-positive">+ $7,500</div>
+            </div>
+
+            <div class="movement-item">
+                <div class="movement-info">
+                    <div class="movement-name">Transporte</div>
+                    <div class="movement-details">
+                        <span>02/12/2024</span>
+                        <span>•</span>
+                        <span>Gasolina</span>
+                    </div>
+                </div>
+                <div class="movement-amount amount-negative">- $800</div>
+            </div>
+
+            <div class="movement-item">
+                <div class="movement-info">
+                    <div class="movement-name">Supermercado</div>
+                    <div class="movement-details">
+                        <span>01/12/2024</span>
+                        <span>•</span>
+                        <span>Comida</span>
+                    </div>
+                </div>
+                <div class="movement-amount amount-negative">- $1,250</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar ingreso/gasto -->
+    <div class="modal" id="financeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="back-btn" onclick="closeModal()">←</button>
+                <div class="modal-title" id="modalTitle">Nuevo movimiento</div>
+            </div>
+
+            <form id="financeForm">
+                <!-- Toggle tipo -->
+                <div class="form-group">
+                    <label class="form-label">Tipo</label>
+                    <div class="type-toggle">
+                        <button type="button" class="type-btn" id="btnIncome" onclick="setType('ingreso')">
+                            + Ingreso
+                        </button>
+                        <button type="button" class="type-btn" id="btnExpense" onclick="setType('gasto')">
+                            + Gasto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Monto *</label>
+                    <input type="number" class="form-input" placeholder="$ 0.00" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Categoría *</label>
+                    <select class="form-select" id="categorySelect" required>
+                        <!-- Se llenarán dinámicamente según el tipo -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Fecha</label>
+                    <input type="date" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nota</label>
+                    <textarea class="form-textarea" placeholder="Agrega una descripción..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="modal-btn btn-save">
+                        ✓ Guardar
+                    </button>
+                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">
+                        ✗ Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentType = 'ingreso';
+
+        const categories = {
+            ingreso: [
+                { value: 'salario', text: 'Salario' },
+                { value: 'negocio', text: 'Negocio' },
+                { value: 'otro', text: 'Otro' }
+            ],
+            gasto: [
+                { value: 'hogar', text: 'Hogar' },
+                { value: 'transporte', text: 'Transporte' },
+                { value: 'comida', text: 'Comida' },
+                { value: 'salud', text: 'Salud' },
+                { value: 'entretenimiento', text: 'Entretenimiento' },
+                { value: 'otro', text: 'Otro' }
+            ]
+        };
+
+        function openModal(type) {
+            currentType = type;
+            document.getElementById('financeModal').classList.add('active');
+            setType(type);
+        }
+
+        function closeModal() {
+            document.getElementById('financeModal').classList.remove('active');
+        }
+
+        function setType(type) {
+            currentType = type;
+            const btnIncome = document.getElementById('btnIncome');
+            const btnExpense = document.getElementById('btnExpense');
+            const categorySelect = document.getElementById('categorySelect');
+
+            // Actualizar botones
+            btnIncome.classList.remove('active-income');
+            btnExpense.classList.remove('active-expense');
+
+            if (type === 'ingreso') {
+                btnIncome.classList.add('active-income');
+            } else {
+                btnExpense.classList.add('active-expense');
+            }
+
+            // Actualizar categorías
+            categorySelect.innerHTML = '<option value="">Seleccionar categoría</option>';
+            categories[type].forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.value;
+                option.textContent = cat.text;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('financeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Enviar formulario
+        document.getElementById('financeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            console.log('Guardando movimiento tipo:', currentType);
+            alert(`Movimiento (${currentType}) guardado (próximamente con Firebase)`);
+            closeModal();
+        });
+    </script>
+</body>
+</html>
