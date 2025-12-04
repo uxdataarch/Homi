@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homi - Inventario</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F2F2F2;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: #5DA7E7;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            font-size: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            padding: 5px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .logo-small {
+            width: 50px;
+            height: 50px;
+            background: #A9E5BB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-small:hover {
+            transform: scale(1.1);
+        }
+
+        /* Contenedor principal */
+        .inventory-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Secciones */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #4A4A4A;
+        }
+
+        .warning-icon {
+            font-size: 24px;
+        }
+
+        .add-section-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #A9E5BB;
+            border: 3px solid #A9E5BB;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-section-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(169, 229, 187, 0.4);
+        }
+
+        /* Cards de productos */
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .product-icon {
+            width: 50px;
+            height: 50px;
+            background: #F2F2F2;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .product-checkbox {
+            width: 25px;
+            height: 25px;
+            border: 3px solid #5DA7E7;
+            border-radius: 50%;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4A4A4A;
+            margin-bottom: 8px;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .product-detail-row {
+            display: flex;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #4A4A4A;
+        }
+
+        .edit-product-btn {
+            width: 40px;
+            height: 40px;
+            background: #5DA7E7;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .edit-product-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #4A4A4A;
+            padding: 0;
+            margin-right: 15px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4A4A4A;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #4A4A4A;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #F2F2F2;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #4A4A4A;
+            background: #F2F2F2;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #5DA7E7;
+            background: white;
+        }
+
+        .form-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .quantity-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .quantity-input {
+            flex: 2;
+        }
+
+        .unit-select {
+            flex: 1;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-save {
+            background: #A9E5BB;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .product-card {
+                flex-wrap: wrap;
+            }
+
+            .product-details {
+                width: 100%;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+
+            .quantity-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <button class="menu-btn" onclick="window.location.href='home.html'">☰</button>
+            <div class="header-title">
+                <span>📦</span>
+                <span>Inventario</span>
+            </div>
+        </div>
+        <div class="logo-small" onclick="window.location.href='home.html'">🏠</div>
+    </div>
+
+    <div class="inventory-container">
+        <!-- Sección: PERECEDEROS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span class="warning-icon">⚠️</span>
+                    <span>PERECEDEROS</span>
+                </div>
+                <button class="add-section-btn" onclick="openModal('perecedero')">+</button>
+            </div>
+
+            <!-- Producto perecedero 1 -->
+            <div class="product-card">
+                <div class="product-checkbox"></div>
+                <div class="product-info">
+                    <div class="product-name">Leche</div>
+                    <div class="product-details">
+                        <div class="product-detail-row">
+                            <span class="detail-label">Fecha de compra:</span>
+                            <span>28/11/2024</span>
+                        </div>
+                        <div class="product-detail-row">
+                            <span class="detail-label">Tiempo de vida útil:</span>
+                            <span>7 días</span>
+                        </div>
+                        <div class="product-detail-row">
+                            <span class="detail-label">Cantidad:</span>
+                            <span>2 litros</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="edit-product-btn" onclick="openModal('perecedero')">✎</button>
+            </div>
+
+            <!-- Producto perecedero 2 -->
+            <div class="product-card">
+                <div class="product-checkbox"></div>
+                <div class="product-info">
+                    <div class="product-name">Yogurt</div>
+                    <div class="product-details">
+                        <div class="product-detail-row">
+                            <span class="detail-label">Fecha de compra:</span>
+                            <span>01/12/2024</span>
+                        </div>
+                        <div class="product-detail-row">
+                            <span class="detail-label">Tiempo de vida útil:</span>
+                            <span>15 días</span>
+                        </div>
+                        <div class="product-detail-row">
+                            <span class="detail-label">Cantidad:</span>
+                            <span>6 piezas</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="edit-product-btn" onclick="openModal('perecedero')">✎</button>
+            </div>
+        </div>
+
+        <!-- Sección: NO PERECEDEROS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span class="warning-icon">🟢</span>
+                    <span>NO PERECEDEROS</span>
+                </div>
+                <button class="add-section-btn" onclick="openModal('no-perecedero')">+</button>
+            </div>
+
+            <!-- Producto no perecedero -->
+            <div class="product-card">
+                <div class="product-checkbox"></div>
+                <div class="product-info">
+                    <div class="product-name">Arroz</div>
+                    <div class="product-details">
+                        <div class="product-detail-row">
+                            <span class="detail-label">Fecha de compra:</span>
+                            <span>15/11/2024</span>
+                        </div>
+                        <div class="product-detail-row">
+                            <span class="detail-label">Cantidad:</span>
+                            <span>5 kg</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="edit-product-btn" onclick="openModal('no-perecedero')">✎</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar producto -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="back-btn" onclick="closeModal()">←</button>
+                <div class="modal-title">Nuevo producto</div>
+            </div>
+
+            <form id="productForm">
+                <div class="form-group">
+                    <label class="form-label">Producto</label>
+                    <input type="text" class="form-input" placeholder="Nombre del producto" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Fecha de compra</label>
+                    <input type="date" class="form-input" required>
+                </div>
+
+                <div class="form-group" id="vidaUtilGroup">
+                    <label class="form-label">Tiempo de vida útil</label>
+                    <input type="text" class="form-input" placeholder="Ej: 7 días, 2 semanas, 1 mes">
+                    <div class="form-note">En caso de que sea no perecedero, ignorar</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Cantidad</label>
+                    <div class="quantity-group">
+                        <input type="number" class="form-input quantity-input" placeholder="0" required>
+                        <select class="form-select unit-select" required>
+                            <option value="">Medida</option>
+                            <option value="gr">gr (gramos)</option>
+                            <option value="kg">kg (kilogramos)</option>
+                            <option value="ml">ml (mililitros)</option>
+                            <option value="l">l (litros)</option>
+                            <option value="piezas">piezas</option>
+                            <option value="unidades">unidades</option>
+                            <option value="cajas">cajas</option>
+                            <option value="paquetes">paquetes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="modal-btn btn-save">
+                        ✓ Guardar
+                    </button>
+                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">
+                        ✗ Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentProductType = 'perecedero';
+
+        // Funciones del modal
+        function openModal(type) {
+            currentProductType = type;
+            document.getElementById('productModal').classList.add('active');
+            
+            // Mostrar/ocultar campo de vida útil según el tipo
+            const vidaUtilGroup = document.getElementById('vidaUtilGroup');
+            if (type === 'no-perecedero') {
+                vidaUtilGroup.style.opacity = '0.5';
+            } else {
+                vidaUtilGroup.style.opacity = '1';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Enviar formulario
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            console.log('Guardando producto tipo:', currentProductType);
+            alert(`Producto ${currentProductType} guardado (próximamente con Firebase)`);
+            closeModal();
+        });
+    </script>
+</body>
+</html>

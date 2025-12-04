@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homi - Pagos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #F2F2F2;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: #5DA7E7;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            font-size: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            padding: 5px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .logo-small {
+            width: 50px;
+            height: 50px;
+            background: #A9E5BB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-small:hover {
+            transform: scale(1.1);
+        }
+
+        /* Filtros */
+        .filters {
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border-radius: 20px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #FFFFFF;
+            color: #4A4A4A;
+        }
+
+        .filter-btn.active {
+            background: #5DA7E7;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-btn {
+            margin-left: auto;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #4A4A4A;
+            color: white;
+            font-size: 30px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(74, 74, 74, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(74, 74, 74, 0.5);
+        }
+
+        /* Lista de pagos */
+        .payments-container {
+            padding: 0 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .payment-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .payment-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .payment-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4A4A4A;
+        }
+
+        .payment-status {
+            padding: 6px 16px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #5DA7E7;
+            color: white;
+        }
+
+        .status-paid {
+            background: #A9E5BB;
+            color: white;
+        }
+
+        .payment-type {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .payment-amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: #A9E5BB;
+            margin-bottom: 12px;
+        }
+
+        .payment-date {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #4A4A4A;
+            margin-bottom: 15px;
+        }
+
+        .date-icon {
+            font-size: 18px;
+        }
+
+        .payment-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-complete {
+            background: #A9E5BB;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #5DA7E7;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #4A4A4A;
+            padding: 0;
+            margin-right: 15px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4A4A4A;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #4A4A4A;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #F2F2F2;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #4A4A4A;
+            background: #F2F2F2;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #5DA7E7;
+            background: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-save {
+            background: #A9E5BB;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 16px;
+            }
+
+            .payment-title {
+                font-size: 18px;
+            }
+
+            .payment-amount {
+                font-size: 24px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <button class="menu-btn" onclick="window.location.href='home.html'">☰</button>
+            <div class="header-title">
+                <span>💳</span>
+                <span>Pagos</span>
+            </div>
+        </div>
+        <div class="logo-small" onclick="window.location.href='home.html'">🏠</div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="pendientes">Pendientes</button>
+        <button class="filter-btn" data-filter="pagados">Pagados</button>
+        <button class="add-btn" onclick="openModal()">+</button>
+    </div>
+
+    <!-- Lista de pagos -->
+    <div class="payments-container" id="paymentsContainer">
+        <!-- Pago pendiente -->
+        <div class="payment-card" data-status="pendiente">
+            <div class="payment-header">
+                <div class="payment-title">Luz CFE</div>
+                <div class="payment-status status-pending">Pendiente</div>
+            </div>
+            <div class="payment-type">Servicio</div>
+            <div class="payment-amount">$600</div>
+            <div class="payment-date">
+                <span class="date-icon">📅</span>
+                <span>Vence: 15/12/2024</span>
+            </div>
+            <div class="payment-actions">
+                <button class="action-btn btn-complete" title="Marcar como pagado">✓</button>
+                <button class="action-btn btn-edit" onclick="openModal()">✎</button>
+                <button class="action-btn btn-delete">✗</button>
+            </div>
+        </div>
+
+        <!-- Pago pagado -->
+        <div class="payment-card" data-status="pagado">
+            <div class="payment-header">
+                <div class="payment-title">Netflix</div>
+                <div class="payment-status status-paid">Pagado</div>
+            </div>
+            <div class="payment-type">Suscripción</div>
+            <div class="payment-amount">$600</div>
+            <div class="payment-date">
+                <span class="date-icon">📅</span>
+                <span>Vence: 20/12/2024</span>
+            </div>
+            <div class="payment-actions">
+                <button class="action-btn btn-complete" title="Marcar como pagado" disabled style="opacity: 0.5;">✓</button>
+                <button class="action-btn btn-edit" onclick="openModal()">✎</button>
+                <button class="action-btn btn-delete">✗</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar pago -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="back-btn" onclick="closeModal()">←</button>
+                <div class="modal-title">Nuevo pago</div>
+            </div>
+
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label class="form-label">Nombre del servicio *</label>
+                    <input type="text" class="form-input" placeholder="Ej: Luz CFE" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Monto *</label>
+                    <input type="number" class="form-input" placeholder="$ 0.00" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Fecha de vencimiento *</label>
+                    <input type="date" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Repetir</label>
+                    <select class="form-select">
+                        <option value="no">No</option>
+                        <option value="mensual">Mensual</option>
+                        <option value="bimestral">Bimestral</option>
+                        <option value="trimestral">Trimestral</option>
+                        <option value="semestral">Semestral</option>
+                        <option value="anual">Anual</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Categoría</label>
+                    <select class="form-select">
+                        <option value="">Seleccionar categoría</option>
+                        <option value="servicio">Servicio</option>
+                        <option value="suscripcion">Suscripción</option>
+                        <option value="educacion">Educación</option>
+                        <option value="seguro">Seguro</option>
+                        <option value="deuda">Deuda</option>
+                        <option value="compras">Compras</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="modal-btn btn-save">
+                        ✓ Guardar
+                    </button>
+                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">
+                        ✗ Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Funciones del modal
+        function openModal() {
+            document.getElementById('paymentModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('paymentModal').classList.remove('active');
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Filtros
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                console.log('Filtrar por:', filter);
+                // Aquí irá la lógica de filtrado con Firebase
+            });
+        });
+
+        // Marcar como pagado
+        document.querySelectorAll('.btn-complete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.disabled) {
+                    // Aquí se registrará el pago en Finanzas
+                    alert('Pago marcado como pagado y registrado en Finanzas (próximamente con Firebase)');
+                    
+                    // Cambiar estado visual
+                    const card = this.closest('.payment-card');
+                    const statusBadge = card.querySelector('.payment-status');
+                    statusBadge.textContent = 'Pagado';
+                    statusBadge.classList.remove('status-pending');
+                    statusBadge.classList.add('status-paid');
+                    this.disabled = true;
+                    this.style.opacity = '0.5';
+                }
+            });
+        });
+
+        // Enviar formulario
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            console.log('Guardando pago...');
+            alert('Pago guardado (próximamente con Firebase)');
+            closeModal();
+        });
+    </script>
+</body>
+</html>
