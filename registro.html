@@ -190,9 +190,7 @@
 </head>
 <body>
     <div class="register-container">
-        <div class="logo">
-            <img src="logo.png" alt="Homi" style="width: 100%; height: 100%; object-fit: contain;">
-        </div>
+        <div class="logo">🏠</div>
         <h1 class="app-name">Homi</h1>
         <p class="welcome-text">Crea tu cuenta y organiza tu hogar</p>
 
@@ -253,8 +251,12 @@
         </p>
     </div>
 
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+    <script type="module">
+        // Importar Firebase
+        import { auth, db, createUserWithEmailAndPassword, doc, setDoc } from './firebase-config.js';
+        import { doc as docRef, setDoc as setDocument } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const name = document.getElementById('name').value;
@@ -274,13 +276,40 @@
                 return;
             }
             
-            console.log('Registrando usuario:', name, email);
-            
-            // Aquí irá la lógica de Firebase para crear cuenta
-            alert('Cuenta creada exitosamente (próximamente con Firebase)');
-            
-            // Redirigir al login
-            window.location.href = 'index.html';
+            try {
+                // Crear usuario en Firebase Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                console.log('Usuario creado:', user.uid);
+                
+                // Guardar información adicional en Firestore
+                await setDocument(docRef(db, 'users', user.uid), {
+                    name: name,
+                    email: email,
+                    createdAt: new Date().toISOString()
+                });
+                
+                alert('¡Cuenta creada exitosamente!');
+                
+                // Redirigir al login
+                window.location.href = 'index.html';
+                
+            } catch (error) {
+                console.error('Error al crear cuenta:', error);
+                
+                let errorMessage = 'Error al crear la cuenta';
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'Este correo ya está registrado';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Correo electrónico inválido';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'La contraseña es muy débil';
+                }
+                
+                alert(errorMessage);
+            }
         });
     </script>
 </body>

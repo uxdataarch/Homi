@@ -211,9 +211,7 @@
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">
-            <img src="logo.png" alt="Homi" style="width: 100%; height: 100%; object-fit: contain;">
-        </div>
+        <div class="logo">🏠</div>
         <h1 class="app-name">Homi</h1>
         <p class="welcome-text">Organiza tu hogar de manera simple</p>
 
@@ -254,24 +252,52 @@
         </p>
     </div>
 
-    <script>
+    <script type="module">
+        // Importar Firebase
+        import { auth, signInWithEmailAndPassword } from './firebase-config.js';
+
         // Maneja el inicio de sesión
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            // Validación básica
-            if (email && password) {
-                // Por ahora redirige directamente a home.html
-                // Más adelante aquí validaremos con Firebase
-                console.log('Iniciando sesión con:', email);
+            try {
+                // Iniciar sesión con Firebase
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                console.log('Usuario autenticado:', user.uid);
+                
+                // Guardar sesión en localStorage
+                localStorage.setItem('homiUser', JSON.stringify({
+                    uid: user.uid,
+                    email: user.email
+                }));
                 
                 // Redirigir a la página principal
                 window.location.href = 'home.html';
-            } else {
-                alert('Por favor completa todos los campos');
+                
+            } catch (error) {
+                console.error('Error al iniciar sesión:', error);
+                
+                // Mensajes de error en español
+                let errorMessage = 'Error al iniciar sesión';
+                
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'No existe una cuenta con este correo';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage = 'Contraseña incorrecta';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Correo electrónico inválido';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Demasiados intentos fallidos. Intenta más tarde';
+                } else if (error.code === 'auth/invalid-credential') {
+                    errorMessage = 'Correo o contraseña incorrectos';
+                }
+                
+                alert(errorMessage);
             }
         });
     </script>
