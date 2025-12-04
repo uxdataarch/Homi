@@ -46,6 +46,12 @@
             justify-content: center;
             font-size: 45px;
             box-shadow: 0 8px 20px rgba(93, 167, 231, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .username {
@@ -213,37 +219,40 @@
 <body>
     <div class="container">
         <div class="logo-section">
-            <div class="logo">🏠</div>
+            <a href="home.html" style="text-decoration: none;">
+                <div class="logo">🏠</div>
+            </a>
             <div class="username">NOMBRE DEL USUARIO</div>
         </div>
 
         <div class="divider"></div>
 
         <div class="menu">
-            <div class="menu-item">
+            <a href="tareas.html" class="menu-item">
                 <div class="menu-icon">📋</div>
                 <div class="menu-text">Tareas del hogar</div>
-            </div>
+            </a>
 
-            <div class="menu-item">
+            <a href="limpieza.html" class="menu-item">
                 <div class="menu-icon">✨</div>
                 <div class="menu-text">Limpieza y mantenimiento</div>
-            </div>
+            </a>
 
-            <div class="menu-item">
+            <a href="inventario.html" class="menu-item">
                 <div class="menu-icon">📦</div>
                 <div class="menu-text">Inventario</div>
-            </div>
+            </a>
 
-            <div class="menu-item">
+            <a href="pagos.html" class="menu-item">
                 <div class="menu-icon">💳</div>
                 <div class="menu-text">Pagos</div>
-            </div>
+            </a>
 
             <div class="menu-item">
                 <div class="menu-icon">💰</div>
                 <div class="menu-text">Finanzas del hogar</div>
             </div>
+            
         </div>
 
         <div class="footer-section">
