@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homi - Ayuda</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #A9E5BB 0%, #5DA7E7 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .help-container {
+            background: #FFFFFF;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .help-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+
+        .back-btn {
+            font-size: 35px;
+            color: #A9E5BB;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        .help-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4A4A4A;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Acordeón de preguntas */
+        .faq-list {
+            margin-bottom: 30px;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #F2F2F2;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: #F2F2F2;
+            transition: all 0.3s ease;
+            gap: 15px;
+        }
+
+        .faq-question:hover {
+            background: #e8e8e8;
+        }
+
+        .faq-question-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4A4A4A;
+            flex: 1;
+        }
+
+        .faq-icon {
+            font-size: 20px;
+            color: #5DA7E7;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(90deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+        }
+
+        .faq-answer-content {
+            padding: 20px;
+            color: #4A4A4A;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        /* Email de contacto */
+        .contact-section {
+            background: #F2F2F2;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .contact-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4A4A4A;
+            margin-bottom: 10px;
+        }
+
+        .contact-email {
+            font-size: 18px;
+            color: #5DA7E7;
+            font-weight: 600;
+        }
+
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .help-container {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            .help-title {
+                font-size: 26px;
+            }
+
+            .faq-question-text {
+                font-size: 15px;
+            }
+
+            .faq-answer-content {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="help-container">
+        <div class="help-header">
+            <button class="back-btn" onclick="window.location.href='home.html'">←</button>
+            <h1 class="help-title">❓ Ayuda</h1>
+        </div>
+
+        <div class="faq-list">
+            <!-- Pregunta 1 -->
+            <div class="faq-item active">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span class="faq-question-text">¿Cómo configurar recordatorios de pagos?</span>
+                    <span class="faq-icon">></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Ve a la sección Pagos y presiona +. Ingresa el servicio, monto y fecha de vencimiento. Recibirás notificaciones automáticas 2 días antes del vencimiento.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 2 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span class="faq-question-text">¿Cómo agregar miembros de la familia?</span>
+                    <span class="faq-icon">></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Ve a Configuración > Miembros del hogar > Agregar miembro. Ingresa su nombre y email. Podrás asignarle tareas y ver sus actividades en la app.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 3 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span class="faq-question-text">¿Cómo funcionan las tareas recurrentes?</span>
+                    <span class="faq-icon">></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Al crear una tarea, selecciona la opción "Repetir" y elige la frecuencia (diaria, semanal, mensual, etc.). La tarea se creará automáticamente según el período seleccionado.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 4 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span class="faq-question-text">¿Los pagos se sincronizan con las finanzas?</span>
+                    <span class="faq-icon">></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Sí, cuando marcas un pago como "Pagado" en la sección de Pagos, automáticamente se registra como un gasto en Finanzas del hogar, actualizando tu balance disponible.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 5 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span class="faq-question-text">¿Cómo funciona el inventario de productos perecederos?</span>
+                    <span class="faq-icon">></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        En Inventario > Perecederos, agrega productos con su fecha de compra y tiempo de vida útil. La app calculará automáticamente la fecha de vencimiento y te alertará cuando esté próxima.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 6 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span class="faq-question-text">¿Puedo exportar mis datos financieros?</span>
+                    <span class="faq-icon">></span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Sí, en la sección Finanzas del hogar encontrarás la opción "Exportar" para descargar tus movimientos en formato PDF o Excel, útil para llevar control de tus gastos e ingresos.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email de contacto -->
+        <div class="contact-section">
+            <div class="contact-label">Email de contacto:</div>
+            <a href="mailto:uxdata.arch@gmail.com" class="contact-email">uxdata.arch@gmail.com</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+            
+            // Cerrar todos los items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Si no estaba activo, abrirlo
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
