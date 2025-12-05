@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homi - Registro</title>
-    <style>
+     <style>
         * {
             margin: 0;
             padding: 0;
@@ -190,13 +190,13 @@
 </head>
 <body>
     <div class="register-container">
-        <div class="logo">
+       <div class="logo">
             <img src="logo.png" alt="Homi" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         <h1 class="app-name">Homi</h1>
         <p class="welcome-text">Crea tu cuenta y organiza tu hogar</p>
 
-        <form id="registerForm">
+        <div id="registerForm">
             <div class="form-group">
                 <label class="form-label" for="name">Nombre completo</label>
                 <input 
@@ -243,8 +243,8 @@
                 >
             </div>
 
-            <button type="submit" class="register-btn">Crear cuenta</button>
-        </form>
+            <button type="button" id="registerBtn" class="register-btn">Crear cuenta</button>
+        </div>
 
         <div class="divider"></div>
 
@@ -255,24 +255,43 @@
 
     <script type="module">
         // Importar Firebase
-        import { auth, db, createUserWithEmailAndPassword, doc, setDoc } from './firebase-config.js';
-        import { doc as docRef, setDoc as setDocument } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
+        // Configuración de Firebase
+        const firebaseConfig = {
+          apiKey: "AIzaSyC_eDl442o_5UR1jburjFrBSzqLBC9bX2w",
+          authDomain: "homi-29ba2.firebaseapp.com",
+          projectId: "homi-29ba2",
+          storageBucket: "homi-29ba2.firebasestorage.app",
+          messagingSenderId: "1066841499256",
+          appId: "1:1066841499256:web:0095d2eec75241be3d6f8d",
+          measurementId: "G-5ZFW0LP6BC"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        document.getElementById('registerBtn').addEventListener('click', async function() {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             
-            // Validar que las contraseñas coincidan
+            // Validaciones
+            if (!name || !email || !password || !confirmPassword) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+            
             if (password !== confirmPassword) {
                 alert('Las contraseñas no coinciden');
                 return;
             }
             
-            // Validar longitud mínima
             if (password.length < 6) {
                 alert('La contraseña debe tener al menos 6 caracteres');
                 return;
@@ -286,7 +305,7 @@
                 console.log('Usuario creado:', user.uid);
                 
                 // Guardar información adicional en Firestore
-                await setDocument(docRef(db, 'users', user.uid), {
+                await setDoc(doc(db, 'users', user.uid), {
                     name: name,
                     email: email,
                     createdAt: new Date().toISOString()
@@ -311,6 +330,13 @@
                 }
                 
                 alert(errorMessage);
+            }
+        });
+
+        // También permitir registro con Enter
+        document.getElementById('confirmPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('registerBtn').click();
             }
         });
     </script>

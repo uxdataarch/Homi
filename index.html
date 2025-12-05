@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homi - Iniciar Sesión</title>
-    <style>
+   <style>
         * {
             margin: 0;
             padding: 0;
@@ -212,12 +212,12 @@
 <body>
     <div class="login-container">
         <div class="logo">
-            <img src="logo.png" alt="Homi" style="width: 100%; height: 100%; object-fit: contain;">
+        <img src="logo.png" alt="Homi" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         <h1 class="app-name">Homi</h1>
         <p class="welcome-text">Organiza tu hogar de manera simple</p>
 
-        <form id="loginForm">
+        <div id="loginForm">
             <div class="form-group">
                 <label class="form-label" for="email">Correo electrónico</label>
                 <input 
@@ -240,8 +240,8 @@
                 >
             </div>
 
-            <button type="submit" class="login-btn">Iniciar sesión</button>
-        </form>
+            <button type="button" id="loginBtn" class="login-btn">Iniciar sesión</button>
+        </div>
 
         <div class="links-section">
             <a href="recuperar.html" class="link">¿Olvidaste tu contraseña?</a>
@@ -256,14 +256,33 @@
 
     <script type="module">
         // Importar Firebase
-        import { auth, signInWithEmailAndPassword } from './firebase-config.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+          apiKey: "AIzaSyC_eDl442o_5UR1jburjFrBSzqLBC9bX2w",
+          authDomain: "homi-29ba2.firebaseapp.com",
+          projectId: "homi-29ba2",
+          storageBucket: "homi-29ba2.firebasestorage.app",
+          messagingSenderId: "1066841499256",
+          appId: "1:1066841499256:web:0095d2eec75241be3d6f8d",
+          measurementId: "G-5ZFW0LP6BC"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
         // Maneja el inicio de sesión
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
+        document.getElementById('loginBtn').addEventListener('click', async function() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
             
             try {
                 // Iniciar sesión con Firebase
@@ -277,6 +296,8 @@
                     uid: user.uid,
                     email: user.email
                 }));
+                
+                alert('¡Inicio de sesión exitoso!');
                 
                 // Redirigir a la página principal
                 window.location.href = 'home.html';
@@ -302,6 +323,14 @@
                 alert(errorMessage);
             }
         });
+
+        // También permitir login con Enter
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginBtn').click();
+            }
+        });
     </script>
 </body>
 </html>
+
