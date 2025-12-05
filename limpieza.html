@@ -1,347 +1,89 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Homi - Limpieza y mantenimiento</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #F2F2F2;
-            min-height: 100vh;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F2F2F2; min-height: 100vh; }
 
         /* Header */
-        .header {
-            background: #5DA7E7;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+        .header { background: #5DA7E7; padding: 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-left { display:flex; align-items:center; gap:15px; }
+        .menu-btn { font-size:28px; cursor:pointer; background:none; border:none; color:white; padding:5px; }
+        .header-title { display:flex; align-items:center; gap:10px; color:white; font-size:20px; font-weight:600; }
+        .logo-small { width:50px; height:50px; background:#A9E5BB; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:25px; cursor:pointer; transition:transform .3s; }
+        .logo-small:hover { transform:scale(1.1); }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        /* Add btn */
+        .add-section { padding:20px; display:flex; justify-content:center; }
+        .add-new-btn { background:#5DA7E7; color:white; padding:15px 40px; border-radius:25px; border:none; font-size:16px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:10px; box-shadow:0 4px 15px rgba(93,167,231,0.3); transition:all .3s; }
+        .add-new-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(93,167,231,0.4); }
+        .add-icon { width:25px; height:25px; background:#A9E5BB; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; }
 
-        .menu-btn {
-            font-size: 28px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: white;
-            padding: 5px;
-        }
+        /* Cards */
+        .maintenance-container { padding:0 20px 20px; max-width:1200px; margin:0 auto; }
+        .maintenance-card { background:white; border-radius:20px; padding:25px; margin-bottom:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); transition:all .3s; display:flex; flex-direction:column; gap:12px; }
+        .maintenance-card:hover { box-shadow:0 4px 20px rgba(0,0,0,0.1); transform:translateY(-2px); }
 
-        .header-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            font-size: 20px;
-            font-weight: 600;
-        }
+        .card-header { display:flex; align-items:center; gap:20px; }
+        .item-icon { width:60px; height:60px; background:#F2F2F2; border-radius:15px; display:flex; align-items:center; justify-content:center; font-size:30px; flex-shrink:0; }
+        .item-name { font-size:24px; font-weight:700; color:#4A4A4A; flex:1; }
+        .edit-icon-btn { width:40px; height:40px; background:#5DA7E7; border:none; border-radius:10px; color:white; font-size:18px; cursor:pointer; transition:all .3s; }
+        .edit-icon-btn:hover { transform:scale(1.1); }
 
-        .logo-small {
-            width: 50px;
-            height: 50px;
-            background: #A9E5BB;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
+        .card-info { display:flex; flex-direction:column; gap:10px; padding-left:80px; }
+        .info-row { display:flex; gap:10px; font-size:15px; color:#4A4A4A; }
+        .info-label { font-weight:600; }
+        .info-value { color:#666; }
 
-        .logo-small:hover {
-            transform: scale(1.1);
-        }
-
-        /* Botón agregar nuevo */
-        .add-section {
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .add-new-btn {
-            background: #5DA7E7;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 25px;
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(93, 167, 231, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .add-new-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(93, 167, 231, 0.4);
-        }
-
-        .add-icon {
-            width: 25px;
-            height: 25px;
-            background: #A9E5BB;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        /* Lista de mantenimientos */
-        .maintenance-container {
-            padding: 0 20px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .maintenance-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .maintenance-card:hover {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .item-icon {
-            width: 60px;
-            height: 60px;
-            background: #F2F2F2;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            flex-shrink: 0;
-        }
-
-        .item-name {
-            font-size: 24px;
-            font-weight: 700;
-            color: #4A4A4A;
-            flex: 1;
-        }
-
-        .edit-icon-btn {
-            width: 40px;
-            height: 40px;
-            background: #5DA7E7;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .edit-icon-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .card-info {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-left: 80px;
-        }
-
-        .info-row {
-            display: flex;
-            gap: 10px;
-            font-size: 15px;
-            color: #4A4A4A;
-        }
-
-        .info-label {
-            font-weight: 600;
-        }
-
-        .info-value {
-            color: #666;
-        }
+        /* small layout for action row */
+        .card-actions { display:flex; gap:8px; margin-top:10px; justify-content:flex-end; }
+        .small-btn { padding:8px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:600; }
+        .btn-delete { background:#ff6b6b; color:white; }
+        .btn-edit { background:#5DA7E7; color:white; }
+        .btn-mark { background:#A9E5BB; color:white; }
 
         /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center; padding:20px; }
+        .modal.active { display:flex; }
+        .modal-content { background:white; border-radius:20px; padding:30px; max-width:500px; width:100%; max-height:90vh; overflow-y:auto; }
+        .modal-header { display:flex; align-items:center; margin-bottom:25px; }
+        .back-btn { font-size:30px; cursor:pointer; border:none; background:none; color:#4A4A4A; padding:0; margin-right:15px; }
+        .modal-title { font-size:20px; font-weight:600; color:#4A4A4A; }
+
+        .form-group { margin-bottom:20px; }
+        .form-label { display:block; color:#4A4A4A; font-size:14px; font-weight:600; margin-bottom:8px; }
+        .form-input, .form-select { width:100%; padding:12px 15px; border:2px solid #F2F2F2; border-radius:10px; font-size:15px; color:#4A4A4A; background:#F2F2F2; transition:all .3s; }
+        .form-input:focus, .form-select:focus { outline:none; border-color:#5DA7E7; background:white; }
+        .form-note { font-size:12px; color:#666; margin-top:5px; font-style:italic; }
+
+        .modal-actions { display:flex; gap:15px; margin-top:30px; }
+        .modal-btn { flex:1; padding:14px; border-radius:12px; border:none; font-size:16px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+        .btn-save { background:#A9E5BB; color:white; }
+        .btn-cancel { background:#ff6b6b; color:white; }
+        .modal-btn:hover { transform:translateY(-2px); box-shadow:0 4px 15px rgba(0,0,0,0.2); }
+
+        /* Vencido */
+        .maintenance-card.overdue {
+            border: 2px solid #ff6b6b;
         }
 
-        .modal.active {
-            display: flex;
+        .maintenance-card.overdue .info-value {
+            color: #ff6b6b !important;
         }
 
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .back-btn {
-            font-size: 30px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            color: #4A4A4A;
-            padding: 0;
-            margin-right: 15px;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #4A4A4A;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            color: #4A4A4A;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .form-input,
-        .form-select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #F2F2F2;
-            border-radius: 10px;
-            font-size: 15px;
-            color: #4A4A4A;
-            background: #F2F2F2;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus,
-        .form-select:focus {
-            outline: none;
-            border-color: #5DA7E7;
-            background: white;
-        }
-
-        .form-note {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-save {
-            background: #A9E5BB;
-            color: white;
-        }
-
-        .btn-cancel {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
+        /* Toast */
+        .toast { position:fixed; bottom:20px; right:20px; background:#333; color:white; padding:12px 18px; border-radius:10px; font-weight:600; opacity:0; transform:translateY(10px); transition:opacity .25s, transform .25s; z-index:2000; }
+        .toast.show { opacity:1; transform:translateY(0); }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .header-title {
-                font-size: 16px;
-            }
-
-            .card-header {
-                flex-wrap: wrap;
-            }
-
-            .card-info {
-                padding-left: 0;
-            }
-
-            .item-name {
-                font-size: 20px;
-            }
-
-            .modal-content {
-                padding: 20px;
-            }
-
-            .modal-actions {
-                flex-direction: column;
-            }
+        @media (max-width:768px) {
+            .card-info { padding-left:0; }
+            .item-name { font-size:20px; }
+            .modal-content { padding:20px; }
+            .modal-actions { flex-direction:column; }
         }
     </style>
 </head>
@@ -350,66 +92,24 @@
     <div class="header">
         <div class="header-left">
             <button class="menu-btn" onclick="window.location.href='home.html'">☰</button>
-            <div class="header-title">
-                <span>🧹</span>
-                <span>Limpieza y mantenimiento</span>
-            </div>
+            <div class="header-title"><span>🧹</span><span>Limpieza y mantenimiento</span></div>
         </div>
         <div class="logo-small" onclick="window.location.href='home.html'">
-            <img src="logo.png" alt="Homi" style="width: 70%; height: 70%; object-fit: contain; border-radius: 50%;">
+            <img src="logo.png" alt="Homi" style="width:70%;height:70%;border-radius:50%;" />
         </div>
     </div>
 
-    <!-- Botón agregar nuevo -->
+    <!-- Add -->
     <div class="add-section">
         <button class="add-new-btn" onclick="openModal()">
-            <span class="add-icon">+</span>
-            Agregar Nuevo
+            <span class="add-icon">+</span> Agregar Nuevo
         </button>
     </div>
 
-    <!-- Lista de mantenimientos -->
-    <div class="maintenance-container">
-        <!-- Item 1: Microondas -->
-        <div class="maintenance-card">
-            <div class="card-header">
-                <div class="item-icon">🔧</div>
-                <div class="item-name">Microondas</div>
-                <button class="edit-icon-btn" onclick="openModal()">✎</button>
-            </div>
-            <div class="card-info">
-                <div class="info-row">
-                    <span class="info-label">Último mantenimiento:</span>
-                    <span class="info-value">15/11/2024</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Próxima fecha de mantenimiento:</span>
-                    <span class="info-value">15/12/2024</span>
-                </div>
-            </div>
-        </div>
+    <!-- Container -->
+    <div class="maintenance-container" id="maintenanceContainer"></div>
 
-        <!-- Item 2: Baños -->
-        <div class="maintenance-card">
-            <div class="card-header">
-                <div class="item-icon">🚽</div>
-                <div class="item-name">Baños</div>
-                <button class="edit-icon-btn" onclick="openModal()">✎</button>
-            </div>
-            <div class="card-info">
-                <div class="info-row">
-                    <span class="info-label">Último mantenimiento:</span>
-                    <span class="info-value">01/12/2024</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Próxima fecha de mantenimiento:</span>
-                    <span class="info-value">08/12/2024</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para agregar/editar mantenimiento -->
+    <!-- Modal -->
     <div class="modal" id="maintenanceModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -420,12 +120,12 @@
             <form id="maintenanceForm">
                 <div class="form-group">
                     <label class="form-label">Título del mantenimiento</label>
-                    <input type="text" class="form-input" placeholder="Ej: Microondas" required>
+                    <input type="text" class="form-input" placeholder="Ej: Microondas" required />
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Primera fecha de mantenimiento</label>
-                    <input type="date" class="form-input" required>
+                    <label class="form-label">Última fecha de mantenimiento</label>
+                    <input type="date" class="form-input" required />
                 </div>
 
                 <div class="form-group">
@@ -442,48 +142,325 @@
                         <option value="semestral">Cada 6 meses</option>
                         <option value="anual">Anual</option>
                     </select>
-                    <div class="form-note">*calcula automáticamente la próxima fecha</div>
+                    <div class="form-note">*La próxima fecha se calcula automáticamente</div>
                 </div>
 
                 <div class="modal-actions">
-                    <button type="submit" class="modal-btn btn-save">
-                        ✓ Guardar
-                    </button>
-                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">
-                        ✗ Cancelar
-                    </button>
+                    <button type="submit" class="modal-btn btn-save">✓ Guardar</button>
+                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">✗ Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        // Funciones del modal
-        function openModal() {
-            document.getElementById('maintenanceModal').classList.add('active');
-        }
+    <!-- Toast -->
+    <div id="toast" class="toast">Guardado</div>
 
-        function closeModal() {
-            document.getElementById('maintenanceModal').classList.remove('active');
-        }
+<script type="module">
+/* ------------------ FIREBASE SETUP ------------------ */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+    getFirestore, collection, addDoc, query, where, onSnapshot,
+    doc, updateDoc, deleteDoc, getDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Cerrar modal al hacer clic fuera
-        document.getElementById('maintenanceModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
+const firebaseConfig = {
+    apiKey: "AIzaSyC_eDl442o_5UR1jburjFrBSzqLBC9bX2w",
+    authDomain: "homi-29ba2.firebaseapp.com",
+    projectId: "homi-29ba2",
+    storageBucket: "homi-29ba2.firebasestorage.app",
+    messagingSenderId: "1066841499256",
+    appId: "1:1066841499256:web:0095d2eec75241be3d6f8d",
+    measurementId: "G-5ZFW0LP6BC"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// compartir funciones con el scope global (por si usas handlers globales)
+window.db = db;
+window.doc = doc;
+window.getDoc = getDoc;
+window.updateDoc = updateDoc;
+window.deleteDoc = deleteDoc;
+
+let currentUser = null;
+window.editingMaintenanceId = null;
+
+/* ------------------ AUTH CHECK ------------------ */
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+    currentUser = user;
+    loadMaintenances();
+});
+
+/* ------------------ UTIL: formatear fecha dd/mm/yyyy para mostrar ------------------ */
+function formatDateDisplay(isoDate) {
+    if (!isoDate) return "Sin fecha";
+    const d = new Date(isoDate);
+    if (isNaN(d)) return isoDate;
+    const day = String(d.getDate()).padStart(2, "0");
+    const month = String(d.getMonth()+1).padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+/* ------------------ UTIL: yyyy-mm-dd string (para inputs) ------------------ */
+function toInputDateString(isoDate) {
+    if (!isoDate) return "";
+    const d = new Date(isoDate);
+    if (isNaN(d)) return "";
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const day = String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
+}
+
+/* ------------------ UTIL: sumar intervalo ------------------ */
+function addInterval(baseIso, freq) {
+    // baseIso puede ser yyyy-mm-dd o ISO string
+    const base = new Date(baseIso);
+    if (isNaN(base)) return null;
+    const res = new Date(base);
+
+    switch (freq) {
+        case "diario": res.setDate(res.getDate() + 1); break;
+        case "3dias": res.setDate(res.getDate() + 3); break;
+        case "semanal": res.setDate(res.getDate() + 7); break;
+        case "quincenal": res.setDate(res.getDate() + 15); break;
+        case "mensual": res.setMonth(res.getMonth() + 1); break;
+        case "bimestral": res.setMonth(res.getMonth() + 2); break;
+        case "trimestral": res.setMonth(res.getMonth() + 3); break;
+        case "semestral": res.setMonth(res.getMonth() + 6); break;
+        case "anual": res.setFullYear(res.getFullYear() + 1); break;
+        default: return null;
+    }
+    return res.toISOString();
+}
+
+/* ------------------ TOAST ------------------ */
+function showToast(msg) {
+    const t = document.getElementById("toast");
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=> t.classList.remove("show"), 2200);
+}
+
+/* ------------------ LOAD & RENDER ------------------ */
+function loadMaintenances() {
+    if (!currentUser) return;
+    const q = query(collection(db, "maintenances"), where("uid", "==", currentUser.uid));
+
+    onSnapshot(q, (snapshot) => {
+        const container = document.getElementById("maintenanceContainer");
+        container.innerHTML = "";
+
+// Convertir snapshot a array normal y ordenar por nextDate
+let items = [];
+snapshot.forEach(docu => items.push({ id: docu.id, ...docu.data() }));
+
+// Ordenar: primero los que tienen fecha más cercana
+items.sort((a, b) => {
+    if (!a.nextDate) return 1;
+    if (!b.nextDate) return -1;
+    return new Date(a.nextDate) - new Date(b.nextDate);
+});
+
+items.forEach(data => {
+    const id = data.id;
+
+    const card = document.createElement("div");
+    card.className = "maintenance-card";
+    card.dataset.id = id;
+
+    // Detectar vencido
+    if (data.nextDate) {
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        const next = new Date(data.nextDate);
+        next.setHours(0,0,0,0);
+
+        if (next < today) {
+            card.classList.add("overdue");
+        }
+    }
+
+    const nextDateDisplay = data.nextDate ? formatDateDisplay(data.nextDate) : "Sin calcular";
+
+    card.innerHTML = `
+        <div class="card-header">
+            <div class="item-icon">🔧</div>
+            <div class="item-name">${escapeHtml(data.title || "Sin título")}</div>
+            <button class="edit-icon-btn btn-edit" data-id="${id}">✎</button>
+        </div>
+
+        <div class="card-info">
+            <div class="info-row"><span class="info-label">Último mantenimiento:</span><span class="info-value">${formatDateDisplay(data.lastDate)}</span></div>
+            <div class="info-row"><span class="info-label">Frecuencia:</span><span class="info-value">${(data.frequency || "—")}</span></div>
+            <div class="info-row"><span class="info-label">Próxima fecha:</span><span class="info-value">${nextDateDisplay}</span></div>
+
+            <div class="card-actions">
+                <button class="small-btn btn-mark" data-id="${id}">Marcar hecho</button>
+                <button class="small-btn btn-delete" data-id="${id}">Eliminar</button>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(card);
+});
+
+
+        // attach events after rendering
+        attachMaintenanceEvents();
+    }, (err) => {
+        console.error("Error al cargar mantenimientos:", err);
+    });
+}
+
+/* ------------------ ESCAPAR HTML (seguridad mínima) ------------------ */
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+/* ------------------ EVENTOS (botones de card) ------------------ */
+function attachMaintenanceEvents() {
+    // Edit buttons
+    document.querySelectorAll(".btn-edit").forEach(btn => {
+        btn.onclick = async () => {
+            const id = btn.dataset.id;
+            const ref = doc(db, "maintenances", id);
+            try {
+                const snap = await getDoc(ref);
+                if (!snap.exists()) { showToast("Mantenimiento no encontrado"); return; }
+                const data = snap.data();
+                // llenar formulario
+                const inputs = document.querySelectorAll("#maintenanceForm .form-input, #maintenanceForm .form-select");
+                inputs[0].value = data.title || "";
+                inputs[1].value = toInputDateString(data.lastDate) || "";
+                inputs[2].value = data.frequency || "";
+                // set editing
+                window.editingMaintenanceId = id;
+                document.querySelector("#maintenanceModal .modal-title").textContent = "Editar mantenimiento";
+                document.getElementById("maintenanceModal").classList.add("active");
+            } catch(err) {
+                console.error(err);
+                showToast("Error al cargar mantenimiento");
             }
-        });
+        };
+    });
 
-        // Enviar formulario
-        document.getElementById('maintenanceForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Aquí irá la lógica para guardar en Firebase
-            // Y calcular automáticamente la próxima fecha
-            console.log('Guardando mantenimiento...');
-            alert('Mantenimiento guardado (próximamente con Firebase y cálculo automático de fechas)');
-            closeModal();
-        });
-    </script>
+    // Mark done -> actualiza lastDate a hoy y recalcula nextDate
+    document.querySelectorAll(".btn-mark").forEach(btn => {
+        btn.onclick = async () => {
+            const id = btn.dataset.id;
+            try {
+                const today = new Date();
+                const todayIso = new Date(today.getFullYear(), today.getMonth(), today.getDate()).toISOString();
+                // obtener doc para saber frecuencia
+                const ref = doc(db, "maintenances", id);
+                const snap = await getDoc(ref);
+                if (!snap.exists()) { showToast("No encontrado"); return; }
+                const data = snap.data();
+                const nextIso = addInterval(todayIso, data.frequency);
+                await updateDoc(ref, { lastDate: todayIso, nextDate: nextIso });
+                showToast("Marcado como hecho");
+            } catch(err) {
+                console.error(err);
+                showToast("Error al marcar");
+            }
+        };
+    });
+
+    // Delete
+    document.querySelectorAll(".btn-delete").forEach(btn => {
+        btn.onclick = async () => {
+            const id = btn.dataset.id;
+            if (!confirm("¿Eliminar mantenimiento?")) return;
+            try {
+                await deleteDoc(doc(db, "maintenances", id));
+                showToast("Eliminado");
+            } catch(err) {
+                console.error(err);
+                showToast("Error al eliminar");
+            }
+        };
+    });
+}
+
+/* ------------------ OPEN / CLOSE MODAL (expuestos globalmente) ------------------ */
+window.openModal = function() {
+    window.editingMaintenanceId = null;
+    document.querySelector("#maintenanceModal .modal-title").textContent = "Nuevo mantenimiento";
+    document.getElementById("maintenanceForm").reset();
+    document.getElementById("maintenanceModal").classList.add("active");
+};
+
+window.closeModal = function() {
+    window.editingMaintenanceId = null;
+    document.getElementById("maintenanceModal").classList.remove("active");
+};
+
+/* cerrar modal al clic fuera */
+document.getElementById("maintenanceModal").addEventListener("click", function(e){
+    if (e.target === this) closeModal();
+});
+
+/* ------------------ FORM SUBMIT (crear / editar) ------------------ */
+document.getElementById("maintenanceForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const inputs = document.querySelectorAll("#maintenanceForm .form-input, #maintenanceForm .form-select");
+    const title = inputs[0].value.trim();
+    const lastDateInput = inputs[1].value;
+    const freq = inputs[2].value;
+
+    if (!title || !lastDateInput || !freq) { showToast("Completa todos los campos"); return; }
+
+    // convertir fecha del input (yyyy-mm-dd) a ISO (midnight local)
+    const parts = lastDateInput.split("-");
+    const isoLast = new Date(Number(parts[0]), Number(parts[1])-1, Number(parts[2])).toISOString();
+
+    const nextIso = addInterval(isoLast, freq);
+
+    try {
+        if (window.editingMaintenanceId) {
+            // editar
+            const ref = doc(db, "maintenances", window.editingMaintenanceId);
+            await updateDoc(ref, {
+                title,
+                lastDate: isoLast,
+                frequency: freq,
+                nextDate: nextIso
+            });
+            showToast("Actualizado");
+            window.editingMaintenanceId = null;
+        } else {
+            // crear
+            await addDoc(collection(db, "maintenances"), {
+                title,
+                lastDate: isoLast,
+                frequency: freq,
+                nextDate: nextIso,
+                uid: currentUser.uid,
+                createdAt: Date.now()
+            });
+            showToast("Guardado");
+        }
+        closeModal();
+        e.target.reset();
+    } catch(err) {
+        console.error(err);
+        showToast("Error al guardar");
+    }
+});
+</script>
+
 </body>
 </html>
