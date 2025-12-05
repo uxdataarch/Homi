@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homi - Finanzas del hogar</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -27,20 +23,8 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .menu-btn {
-            font-size: 28px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: white;
-            padding: 5px;
-        }
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .menu-btn { font-size: 28px; cursor: pointer; background: none; border: none; color: white; padding: 5px; }
 
         .header-title {
             display: flex;
@@ -52,217 +36,90 @@
         }
 
         .logo-small {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             background: #A9E5BB;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
+            display: flex; align-items: center; justify-content: center;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform .3s;
         }
 
-        .logo-small:hover {
-            transform: scale(1.1);
-        }
+        .logo-small:hover { transform: scale(1.1); }
 
         /* Contenedor principal */
-        .finance-container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .finance-container { padding: 20px; max-width: 1200px; margin: 0 auto; }
 
         /* Resumen financiero */
         .summary-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
+            background: white; border-radius: 20px; padding: 30px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         .summary-row {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 25px;
-            gap: 20px;
+            display: flex; justify-content: space-around;
+            margin-bottom: 25px; gap: 20px;
         }
 
-        .summary-item {
-            text-align: center;
-            flex: 1;
-        }
+        .summary-item { text-align: center; flex: 1; }
+        .summary-label { font-size: 18px; font-weight: 600; color: #4A4A4A; margin-bottom: 10px; }
+        .summary-amount { font-size: 32px; font-weight: 700; }
+        .amount-income { color: #A9E5BB; }
+        .amount-expense { color: #ff6b6b; }
 
-        .summary-label {
-            font-size: 18px;
-            font-weight: 600;
-            color: #4A4A4A;
-            margin-bottom: 10px;
-        }
+        .available-section { text-align: center; padding-top: 20px; border-top: 2px solid #F2F2F2; }
+        .available-label { font-size: 20px; font-weight: 600; color: #4A4A4A; margin-bottom: 10px; }
+        .available-amount { font-size: 36px; font-weight: 700; color: #4A4A4A; }
 
-        .summary-amount {
-            font-size: 32px;
-            font-weight: 700;
-        }
-
-        .amount-income {
-            color: #A9E5BB;
-        }
-
-        .amount-expense {
-            color: #ff6b6b;
-        }
-
-        .available-section {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 2px solid #F2F2F2;
-        }
-
-        .available-label {
-            font-size: 20px;
-            font-weight: 600;
-            color: #4A4A4A;
-            margin-bottom: 10px;
-        }
-
-        .available-amount {
-            font-size: 36px;
-            font-weight: 700;
-            color: #4A4A4A;
-        }
-
-        /* Botones de acción */
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+        .action-buttons { display:flex; gap:15px; margin-bottom:30px; }
 
         .action-btn {
-            flex: 1;
-            padding: 16px;
-            border-radius: 15px;
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            flex:1; padding:16px; border-radius:15px; border:none;
+            font-size:16px; font-weight:600; cursor:pointer;
+            display:flex; align-items:center; justify-content:center; gap:8px;
+            box-shadow:0 4px 15px rgba(0,0,0,0.1);
+            transition:.3s;
         }
 
-        .btn-income {
-            background: #A9E5BB;
-            color: white;
-        }
+        .btn-income { background:#A9E5BB; color:white; }
+        .btn-expense { background:#ff6b6b; color:white; }
 
-        .btn-expense {
-            background: #ff6b6b;
-            color: white;
-        }
+        .action-btn:hover { transform: translateY(-2px); }
 
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Últimos movimientos */
+        /* Movimientos */
         .movements-section {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background:white; border-radius:20px; padding:25px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .movements-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #4A4A4A;
-            margin-bottom: 20px;
-        }
+        .movements-title { font-size:22px; font-weight:700; margin-bottom:20px; color:#4A4A4A; }
 
         .movement-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            background: #F2F2F2;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            transition: all 0.3s ease;
+            display:flex; align-items:center; justify-content:space-between;
+            padding:15px; background:#F2F2F2; border-radius:12px;
+            margin-bottom:12px; transition:.3s;
         }
 
-        .movement-item:hover {
-            background: #e8e8e8;
-            transform: translateX(5px);
-        }
+        .movement-item:hover { background:#e8e8e8; transform: translateX(5px); }
+        .movement-info { flex: 1; }
+        .movement-name { font-size:18px; font-weight:600; margin-bottom:5px; color:#4A4A4A; }
+        .movement-details { font-size:13px; color:#666; }
+        .movement-amount { font-size:22px; font-weight:700; white-space: nowrap; }
 
-        .movement-info {
-            flex: 1;
-        }
-
-        .movement-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #4A4A4A;
-            margin-bottom: 5px;
-        }
-
-        .movement-details {
-            display: flex;
-            gap: 15px;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .movement-amount {
-            font-size: 22px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .amount-positive {
-            color: #A9E5BB;
-        }
-
-        .amount-negative {
-            color: #ff6b6b;
-        }
+        .amount-positive { color:#A9E5BB; }
+        .amount-negative { color:#ff6b6b; }
 
         /* Modal */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.5); z-index:1000;
+            justify-content:center; align-items:center; padding:20px;
         }
-
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display:flex; }
 
         .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
+            background:white; border-radius:20px;
+            padding:30px; width:100%; max-width:500px; max-height:90vh; overflow-y:auto;
         }
 
         .modal-header {
@@ -285,38 +142,6 @@
             font-size: 20px;
             font-weight: 600;
             color: #4A4A4A;
-        }
-
-        /* Tipo toggle */
-        .type-toggle {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .type-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 12px;
-            border: 2px solid #F2F2F2;
-            background: #F2F2F2;
-            color: #4A4A4A;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .type-btn.active-income {
-            background: #A9E5BB;
-            color: white;
-            border-color: #A9E5BB;
-        }
-
-        .type-btn.active-expense {
-            background: #ff6b6b;
-            color: white;
-            border-color: #ff6b6b;
         }
 
         .form-group {
@@ -394,261 +219,455 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-title {
-                font-size: 16px;
-            }
+        /* PDF button */
+        #exportPDF {
+            background:#5DA7E7; color:white;
+            border:none; border-radius:10px;
+            padding:12px 18px; cursor:pointer;
+            font-size:16px; font-weight:600;
+            margin-bottom:20px;
+        }
 
+        #exportPDF:hover {
+            background: #4d96d6;
+        }
+
+        @media (max-width: 768px) {
             .summary-row {
                 flex-direction: column;
-                gap: 20px;
             }
-
-            .summary-amount {
-                font-size: 28px;
-            }
-
-            .available-amount {
-                font-size: 32px;
-            }
-
             .action-buttons {
                 flex-direction: column;
             }
-
             .movement-item {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 10px;
             }
-
             .movement-amount {
                 align-self: flex-end;
-            }
-
-            .modal-content {
-                padding: 20px;
-            }
-
-            .modal-actions {
-                flex-direction: column;
             }
         }
     </style>
 </head>
+
 <body>
+
     <!-- Header -->
     <div class="header">
         <div class="header-left">
             <button class="menu-btn" onclick="window.location.href='home.html'">☰</button>
-            <div class="header-title">
-                <span>💰</span>
-                <span>Finanzas del hogar</span>
-            </div>
+            <div class="header-title">💰 Finanzas del hogar</div>
         </div>
         <div class="logo-small" onclick="window.location.href='home.html'">
-            <img src="logo.png" alt="Homi" style="width: 70%; height: 70%; object-fit: contain; border-radius: 50%;">
+            <img src="logo.png" style="width:70%;height:70%;object-fit:contain;border-radius:50%;">
         </div>
     </div>
 
     <div class="finance-container">
+
         <!-- Resumen financiero -->
         <div class="summary-card">
             <div class="summary-row">
                 <div class="summary-item">
                     <div class="summary-label">Ingresos</div>
-                    <div class="summary-amount amount-income" id="totalIncome">$15,000</div>
+                    <div class="summary-amount amount-income" id="totalIncome">$0</div>
                 </div>
                 <div class="summary-item">
                     <div class="summary-label">Gastos</div>
-                    <div class="summary-amount amount-expense" id="totalExpense">$8,450</div>
+                    <div class="summary-amount amount-expense" id="totalExpense">$0</div>
                 </div>
             </div>
             <div class="available-section">
                 <div class="available-label">Disponible</div>
-                <div class="available-amount" id="available">$6,550</div>
+                <div class="available-amount" id="available">$0</div>
             </div>
         </div>
 
-        <!-- Botones de acción -->
+        <!-- Botones -->
         <div class="action-buttons">
-            <button class="action-btn btn-income" onclick="openModal('ingreso')">
-                + Ingreso
-            </button>
-            <button class="action-btn btn-expense" onclick="openModal('gasto')">
-                + Gasto
-            </button>
+            <button class="action-btn btn-income" id="btnIngreso">+ Ingreso</button>
+            <button class="action-btn btn-expense" id="btnGasto">+ Gasto</button>
         </div>
 
-        <!-- Últimos movimientos -->
+        <!-- PDF -->
+        <button id="exportPDF">📄 Exportar PDF (mes actual)</button>
+
+        <!-- Movimientos -->
         <div class="movements-section">
             <h2 class="movements-title">Últimos movimientos</h2>
-
-            <div class="movement-item">
-                <div class="movement-info">
-                    <div class="movement-name">Salario</div>
-                    <div class="movement-details">
-                        <span>03/12/2024</span>
-                        <span>•</span>
-                        <span>Quincena</span>
-                    </div>
-                </div>
-                <div class="movement-amount amount-positive">+ $7,500</div>
-            </div>
-
-            <div class="movement-item">
-                <div class="movement-info">
-                    <div class="movement-name">Transporte</div>
-                    <div class="movement-details">
-                        <span>02/12/2024</span>
-                        <span>•</span>
-                        <span>Gasolina</span>
-                    </div>
-                </div>
-                <div class="movement-amount amount-negative">- $800</div>
-            </div>
-
-            <div class="movement-item">
-                <div class="movement-info">
-                    <div class="movement-name">Supermercado</div>
-                    <div class="movement-details">
-                        <span>01/12/2024</span>
-                        <span>•</span>
-                        <span>Comida</span>
-                    </div>
-                </div>
-                <div class="movement-amount amount-negative">- $1,250</div>
-            </div>
+            <div id="movementsList"></div>
         </div>
     </div>
 
-    <!-- Modal para agregar ingreso/gasto -->
+    <!-- Modal -->
     <div class="modal" id="financeModal">
         <div class="modal-content">
+
             <div class="modal-header">
-                <button class="back-btn" onclick="closeModal()">←</button>
+                <button class="back-btn" id="btnBack">←</button>
                 <div class="modal-title" id="modalTitle">Nuevo movimiento</div>
             </div>
 
             <form id="financeForm">
-                <!-- Toggle tipo -->
                 <div class="form-group">
                     <label class="form-label">Tipo</label>
-                    <div class="type-toggle">
-                        <button type="button" class="type-btn" id="btnIncome" onclick="setType('ingreso')">
-                            + Ingreso
-                        </button>
-                        <button type="button" class="type-btn" id="btnExpense" onclick="setType('gasto')">
-                            + Gasto
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Monto *</label>
-                    <input type="number" class="form-input" placeholder="$ 0.00" step="0.01" required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Categoría *</label>
-                    <select class="form-select" id="categorySelect" required>
-                        <!-- Se llenarán dinámicamente según el tipo -->
+                    <select id="inputTipo" class="form-select">
+                        <option value="ingreso">Ingreso</option>
+                        <option value="gasto">Gasto</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Fecha</label>
-                    <input type="date" class="form-input" required>
+                    <label class="form-label">Monto *</label>
+                    <input id="inputMonto" type="number" step="0.01" class="form-input" placeholder="$ 0.00" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Categoría *</label>
+                    <input id="inputCategoria" class="form-input" placeholder="Ej: Supermercado, Salario..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Fecha *</label>
+                    <input id="inputFecha" type="date" class="form-input" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Nota</label>
-                    <textarea class="form-textarea" placeholder="Agrega una descripción..."></textarea>
+                    <textarea id="inputNota" class="form-textarea" placeholder="Agrega una descripción..."></textarea>
                 </div>
 
                 <div class="modal-actions">
-                    <button type="submit" class="modal-btn btn-save">
-                        ✓ Guardar
-                    </button>
-                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">
-                        ✗ Cancelar
-                    </button>
+                    <button type="submit" class="modal-btn btn-save">✓ Guardar</button>
+                    <button type="button" class="modal-btn btn-cancel" id="btnCancelar">✗ Cancelar</button>
                 </div>
             </form>
+
         </div>
     </div>
 
-    <script>
-        let currentType = 'ingreso';
+<script type="module">
 
-        const categories = {
-            ingreso: [
-                { value: 'salario', text: 'Salario' },
-                { value: 'negocio', text: 'Negocio' },
-                { value: 'otro', text: 'Otro' }
-            ],
-            gasto: [
-                { value: 'hogar', text: 'Hogar' },
-                { value: 'transporte', text: 'Transporte' },
-                { value: 'comida', text: 'Comida' },
-                { value: 'salud', text: 'Salud' },
-                { value: 'entretenimiento', text: 'Entretenimiento' },
-                { value: 'otro', text: 'Otro' }
-            ]
-        };
+/* ----------------- IMPORTAR FIREBASE ----------------- */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    where,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        function openModal(type) {
-            currentType = type;
-            document.getElementById('financeModal').classList.add('active');
-            setType(type);
-        }
+/* CONFIG FIREBASE */
+const firebaseConfig = {
+    apiKey: "AIzaSyC_eDl442o_5UR1jburjFrBSzqLBC9bX2w",
+    authDomain: "homi-29ba2.firebaseapp.com",
+    projectId: "homi-29ba2",
+    storageBucket: "homi-29ba2.firebasestorage.app",
+    messagingSenderId: "1066841499256",
+    appId: "1:1066841499256:web:0095d2eec75241be3d6f8d",
+    measurementId: "G-5ZFW0LP6BC"
+};
 
-        function closeModal() {
-            document.getElementById('financeModal').classList.remove('active');
-        }
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-        function setType(type) {
-            currentType = type;
-            const btnIncome = document.getElementById('btnIncome');
-            const btnExpense = document.getElementById('btnExpense');
-            const categorySelect = document.getElementById('categorySelect');
+/* ----------------- VARIABLES ----------------- */
+let currentUser = null;
+let currentType = "ingreso";
 
-            // Actualizar botones
-            btnIncome.classList.remove('active-income');
-            btnExpense.classList.remove('active-expense');
+/* ----------------- AUTENTICACIÓN ----------------- */
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+    currentUser = user;
+    loadMovements();
+});
 
-            if (type === 'ingreso') {
-                btnIncome.classList.add('active-income');
-            } else {
-                btnExpense.classList.add('active-expense');
-            }
+/* ----------------- MODAL ----------------- */
+function openModal(type) {
+    currentType = type;
+    document.getElementById("inputTipo").value = type;
+    document.getElementById("modalTitle").textContent =
+        type === "ingreso" ? "Nuevo ingreso" : "Nuevo gasto";
 
-            // Actualizar categorías
-            categorySelect.innerHTML = '<option value="">Seleccionar categoría</option>';
-            categories[type].forEach(cat => {
-                const option = document.createElement('option');
-                option.value = cat.value;
-                option.textContent = cat.text;
-                categorySelect.appendChild(option);
-            });
-        }
+    // Setear fecha de hoy
+    document.getElementById("inputFecha").value = new Date().toISOString().slice(0, 10);
 
-        // Cerrar modal al hacer clic fuera
-        document.getElementById('financeModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
+    document.getElementById("financeModal").classList.add("active");
+}
+
+function closeModal() {
+    document.getElementById("financeModal").classList.remove("active");
+    document.getElementById("financeForm").reset();
+}
+
+/* ----------------- EVENT LISTENERS PARA BOTONES ----------------- */
+document.getElementById("btnIngreso").addEventListener("click", () => openModal('ingreso'));
+document.getElementById("btnGasto").addEventListener("click", () => openModal('gasto'));
+document.getElementById("btnCancelar").addEventListener("click", closeModal);
+document.getElementById("btnBack").addEventListener("click", closeModal);
+
+// Cerrar modal al hacer clic fuera
+document.getElementById("financeModal").addEventListener("click", (e) => {
+    if (e.target.id === "financeModal") closeModal();
+});
+
+/* ----------------- GUARDAR MOVIMIENTO ----------------- */
+document.getElementById("financeForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const tipo = document.getElementById("inputTipo").value;
+    const monto = Number(document.getElementById("inputMonto").value);
+    const categoria = document.getElementById("inputCategoria").value.trim();
+    const fecha = document.getElementById("inputFecha").value;
+    const nota = document.getElementById("inputNota").value.trim();
+
+    if (!monto || !categoria || !fecha) {
+        alert("Completa todos los campos obligatorios");
+        return;
+    }
+
+    try {
+        await addDoc(collection(db, "finanzas"), {
+            uid: currentUser.uid,
+            tipo: tipo,
+            monto: monto,
+            categoria: categoria,
+            descripcion: nota || categoria,
+            fecha: fecha,
+            timestamp: Date.now()
         });
 
-        // Enviar formulario
-        document.getElementById('financeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        closeModal();
+        loadMovements();
+    } catch (error) {
+        console.error("Error al guardar:", error);
+        alert("Error al guardar el movimiento");
+    }
+});
+
+/* ----------------- CARGAR MOVIMIENTOS ----------------- */
+async function loadMovements() {
+    if (!currentUser) return;
+
+    try {
+        // Sin orderBy para evitar error de índice
+        const q = query(
+            collection(db, "finanzas"),
+            where("uid", "==", currentUser.uid)
+        );
+
+        const snap = await getDocs(q);
+        const data = [];
+        snap.forEach(doc => data.push({ id: doc.id, ...doc.data() }));
+
+        // Ordenar manualmente por timestamp (desc)
+        data.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+        renderMovements(data);
+        updateSummary(data);
+    } catch (error) {
+        console.error("Error al cargar:", error);
+        alert("Error al cargar movimientos. Revisa la consola.");
+    }
+}
+
+/* ----------------- RENDERIZAR MOVIMIENTOS ----------------- */
+function renderMovements(arr) {
+    const list = document.getElementById("movementsList");
+    list.innerHTML = "";
+
+    if (arr.length === 0) {
+        list.innerHTML = '<p style="color:#666;text-align:center;padding:20px;">No hay movimientos registrados</p>';
+        return;
+    }
+
+    arr.forEach(m => {
+        const div = document.createElement("div");
+        div.className = "movement-item";
+
+        const montoFormat = new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: 'MXN'
+        }).format(m.monto || 0);
+
+        div.innerHTML = `
+            <div class="movement-info">
+                <div class="movement-name">${escapeHtml(m.descripcion || m.categoria)}</div>
+                <div class="movement-details">
+                    ${m.fecha || 'Sin fecha'} • ${escapeHtml(m.categoria || '')}
+                </div>
+            </div>
+
+            <div class="movement-amount ${m.tipo === "ingreso" ? "amount-positive" : "amount-negative"}">
+                ${m.tipo === "ingreso" ? "+" : "-"} ${montoFormat}
+            </div>
+        `;
+
+        list.appendChild(div);
+    });
+}
+
+/* ----------------- RESUMEN ----------------- */
+function updateSummary(arr) {
+    let ingresos = 0;
+    let gastos = 0;
+
+    arr.forEach(m => {
+        const monto = Number(m.monto) || 0;
+        if (m.tipo === "ingreso") {
+            ingresos += monto;
+        } else {
+            gastos += monto;
+        }
+    });
+
+    const formatCurrency = (num) => {
+        return new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: 'MXN'
+        }).format(num);
+    };
+
+    document.getElementById("totalIncome").textContent = formatCurrency(ingresos);
+    document.getElementById("totalExpense").textContent = formatCurrency(gastos);
+    document.getElementById("available").textContent = formatCurrency(ingresos - gastos);
+}
+
+/* ----------------- EXPORTAR PDF ----------------- */
+document.getElementById("exportPDF").addEventListener("click", async () => {
+    try {
+        // Verificar si jsPDF está disponible
+        if (typeof window.jspdf === 'undefined') {
+            alert("Cargando librería PDF...");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Título principal
+        doc.setFontSize(20);
+        doc.setFont(undefined, 'bold');
+        doc.text("HOMI - Finanzas del Hogar", 105, 20, { align: 'center' });
+        
+        // Subtítulo con mes actual
+        const now = new Date();
+        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                           "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        const currentMonth = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+        
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'normal');
+        doc.text(`Reporte del mes: ${currentMonth}`, 105, 30, { align: 'center' });
+        
+        // Línea separadora
+        doc.setLineWidth(0.5);
+        doc.line(20, 35, 190, 35);
+        
+        // Obtener datos actuales
+        const ingresoText = document.getElementById("totalIncome").textContent;
+        const gastoText = document.getElementById("totalExpense").textContent;
+        const disponibleText = document.getElementById("available").textContent;
+        
+        // Resumen financiero
+        doc.setFontSize(16);
+        doc.setFont(undefined, 'bold');
+        doc.text("Resumen Financiero", 20, 45);
+        
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor(169, 229, 187); // Verde para ingresos
+        doc.text(`Ingresos: ${ingresoText}`, 30, 55);
+        
+        doc.setTextColor(255, 107, 107); // Rojo para gastos
+        doc.text(`Gastos: ${gastoText}`, 30, 65);
+        
+        doc.setTextColor(74, 74, 74); // Gris oscuro para disponible
+        doc.text(`Disponible: ${disponibleText}`, 30, 75);
+        
+        // Línea separadora
+        doc.setDrawColor(0, 0, 0);
+        doc.line(20, 82, 190, 82);
+        
+        // Últimos movimientos
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(16);
+        doc.setFont(undefined, 'bold');
+        doc.text("Últimos Movimientos", 20, 92);
+        
+        // Obtener movimientos del DOM
+        const movements = document.querySelectorAll('.movement-item');
+        let yPos = 102;
+        const maxMovements = 15; // Máximo de movimientos en una página
+        let count = 0;
+        
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        
+        movements.forEach((mov, index) => {
+            if (count >= maxMovements) return; // Limitar a una página
             
-            console.log('Guardando movimiento tipo:', currentType);
-            alert(`Movimiento (${currentType}) guardado (próximamente con Firebase)`);
-            closeModal();
+            const name = mov.querySelector('.movement-name').textContent;
+            const details = mov.querySelector('.movement-details').textContent;
+            const amount = mov.querySelector('.movement-amount').textContent;
+            const isIncome = mov.querySelector('.amount-positive') !== null;
+            
+            // Color según tipo
+            if (isIncome) {
+                doc.setTextColor(169, 229, 187); // Verde
+            } else {
+                doc.setTextColor(255, 107, 107); // Rojo
+            }
+            
+            // Nombre y monto
+            doc.text(name, 25, yPos);
+            doc.text(amount, 170, yPos, { align: 'right' });
+            
+            // Detalles en gris
+            doc.setTextColor(150, 150, 150);
+            doc.setFontSize(8);
+            doc.text(details, 25, yPos + 4);
+            
+            yPos += 12;
+            count++;
+            doc.setFontSize(10);
         });
-    </script>
+        
+        // Footer
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text(`Generado el ${now.toLocaleDateString('es-MX')} a las ${now.toLocaleTimeString('es-MX')}`, 105, 280, { align: 'center' });
+        doc.text("www.homi-app.com", 105, 285, { align: 'center' });
+        
+        // Guardar
+        doc.save(`Finanzas_Homi_${currentMonth.replace(' ', '_')}.pdf`);
+        
+    } catch (error) {
+        console.error("Error al generar PDF:", error);
+        alert("Error al generar el PDF. Por favor intenta de nuevo.");
+    }
+});
+
+/* ----------------- ESCAPE HTML ----------------- */
+function escapeHtml(text) {
+    if (!text) return "";
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+</script>
+
+<!-- jsPDF Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </body>
 </html>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Homi - Pagos</title>
 <style>
-/* ---------- estilos (mantuve tu diseño con pequeños ajustes) ---------- */
+/* ---------- estilos ---------- */
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#F2F2F2;min-height:100vh}
 
@@ -204,13 +204,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// export for other scripts if needed
-window.db = db;
-window.doc = doc;
-window.updateDoc = updateDoc;
-window.deleteDoc = deleteDoc;
-window.getDoc = getDoc;
-
 let currentUser = null;
 window.editingPaymentId = null;
 
@@ -234,7 +227,7 @@ function toInputDate(iso){
   return `${y}-${m}-${day}`;
 }
 
-/* ------------------ CALCULO SIGUIENTE FECHA (OPCIÓN C: corregir al último día disponible) ------------------ */
+/* ------------------ CALCULO SIGUIENTE FECHA ------------------ */
 function addMonthsCorrect(day, monthIndex, year, addM){
   const targetMonth = monthIndex + addM;
   const lastDay = new Date(year, targetMonth + 1, 0).getDate();
@@ -317,7 +310,6 @@ function loadPayments(){
   onSnapshot(q, (snapshot)=>{
     const arr = [];
     snapshot.forEach(d => arr.push({ id: d.id, ...d.data() }));
-    // sort by dueDate asc (nulls last), then by title
     arr.sort((a,b)=>{
       if(!a.dueDate && b.dueDate) return 1;
       if(a.dueDate && !b.dueDate) return -1;
@@ -326,7 +318,7 @@ function loadPayments(){
     });
     latestPaymentsCache = arr;
     renderList(arr);
-    actualizarContador(arr); // <-- actualiza contador en cada snapshot
+    actualizarContador(arr);
   }, err=> console.error(err));
 }
 
@@ -427,7 +419,7 @@ function renderList(items){
 
 /* ---------- attach events ---------- */
 function attachCardEvents(){
-  // complete
+  // *** COMPLETE - CON SINCRONIZACIÓN A FINANZAS ***
   document.querySelectorAll(".btn-complete").forEach(b=>{
     b.onclick = async ()=>{
       const id = b.dataset.id;
@@ -437,12 +429,29 @@ function attachCardEvents(){
         if(!snap.exists()){ showToast("No encontrado"); return; }
         const data = snap.data();
 
-        // mark original as pagado
+        // 1. Marcar como pagado
         await updateDoc(ref,{ status: "pagado", paidAt: new Date().toISOString() });
 
-        showToast("Pago registrado");
+        // 2. *** REGISTRAR EN FINANZAS COMO GASTO ***
+        try {
+          await addDoc(collection(db, "finanzas"), {
+            uid: currentUser.uid,
+            tipo: "gasto",
+            monto: data.amount || 0,
+            categoria: data.category || "Pago",
+            descripcion: `Pago: ${data.title}`,
+            fecha: new Date().toISOString().slice(0, 10),
+            timestamp: Date.now(),
+            fromPayment: true,
+            paymentId: id
+          });
+          showToast("Pago registrado en finanzas ✓");
+        } catch (finErr) {
+          console.error("Error al registrar en finanzas:", finErr);
+          showToast("Marcado, pero error en finanzas");
+        }
 
-        // if frequency != 'no', create next payment
+        // 3. Si tiene frecuencia, crear siguiente pago
         if (data.frequency && data.frequency !== "no") {
           const nextDue = computeNextDueDate(data.dueDate || new Date().toISOString(), data.frequency);
           if (nextDue) {
@@ -476,13 +485,11 @@ function attachCardEvents(){
         const snap = await getDoc(ref);
         if(!snap.exists()){ showToast("No encontrado"); return; }
         const data = snap.data();
-        // fill form
         document.getElementById("inputTitle").value = data.title || "";
         document.getElementById("inputAmount").value = data.amount || "";
         document.getElementById("inputDueDate").value = toInputDate(data.dueDate) || "";
         document.getElementById("inputFrequency").value = data.frequency || "no";
         document.getElementById("inputCategory").value = data.category || "";
-        // editing id
         window.editingPaymentId = id;
         modalTitle.textContent = "Editar pago";
         modal.classList.add("active");
@@ -497,7 +504,7 @@ function attachCardEvents(){
   document.querySelectorAll(".btn-delete").forEach(b=>{
     b.onclick = async ()=>{
       const id = b.dataset.id;
-      if(!confirm("Eliminar pago?")) return;
+      if(!confirm("¿Eliminar pago?")) return;
       try {
         await deleteDoc(doc(db,"payments",id));
         showToast("Eliminado");
@@ -557,7 +564,6 @@ form.addEventListener("submit", async (e)=>{
 
   if(!title || !due){ showToast("Completa los campos obligatorios"); return; }
 
-  // convert due input to ISO (midnight local)
   const parts = due.split("-");
   const dueIso = new Date(Number(parts[0]), Number(parts[1])-1, Number(parts[2])).toISOString();
 
@@ -576,9 +582,7 @@ form.addEventListener("submit", async (e)=>{
       showToast("Guardado");
     }
 
-    // close & reset
     closeModal();
-    // onSnapshot will refresh list and contador automatically
   } catch(err){
     console.error(err);
     showToast("Error al guardar");
