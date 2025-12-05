@@ -1,564 +1,590 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homi - Pagos</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Homi - Pagos</title>
+<style>
+/* ---------- estilos (mantuve tu diseño con pequeños ajustes) ---------- */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#F2F2F2;min-height:100vh}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #F2F2F2;
-            min-height: 100vh;
-        }
+/* Header */
+.header{background:#5DA7E7;padding:20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.header-left{display:flex;align-items:center;gap:15px}
+.menu-btn{font-size:28px;cursor:pointer;background:none;border:none;color:white;padding:5px}
+.header-title{display:flex;align-items:center;gap:10px;color:white;font-size:20px;font-weight:600}
+.logo-small{width:50px;height:50px;background:#A9E5BB;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:25px;cursor:pointer;transition:transform .3s}
+.logo-small:hover{transform:scale(1.1)}
 
-        /* Header */
-        .header {
-            background: #5DA7E7;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+/* Filters */
+.filters{padding:20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filter-btn{padding:12px 24px;border-radius:20px;border:none;font-size:15px;font-weight:600;cursor:pointer;background:#FFFFFF;color:#4A4A4A}
+.filter-btn.active{background:#5DA7E7;color:white}
+.add-btn{margin-left:auto;width:50px;height:50px;border-radius:50%;background:#4A4A4A;color:white;font-size:30px;border:none;cursor:pointer;box-shadow:0 4px 15px rgba(74,74,74,0.3)}
+.add-btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(74,74,74,0.5)}
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+/* contador */
+#contadorPagos{padding:8px 20px 0;color:#4A4A4A;font-weight:600}
 
-        .menu-btn {
-            font-size: 28px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: white;
-            padding: 5px;
-        }
+/* Container */
+.payments-container{padding:0 20px 40px;max-width:1200px;margin:0 auto}
+.payment-card{background:white;border-radius:15px;padding:20px;margin-bottom:15px;box-shadow:0 2px 10px rgba(0,0,0,0.05);transition:all .2s}
+.payment-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+.payment-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.payment-title{font-size:20px;font-weight:700;color:#4A4A4A}
+.payment-status{padding:6px 14px;border-radius:15px;font-size:13px;font-weight:600}
+.status-pending{background:#5DA7E7;color:white}
+.status-paid{background:#A9E5BB;color:white}
 
-        .header-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            font-size: 20px;
-            font-weight: 600;
-        }
+.payment-type{font-size:14px;color:#666;margin-bottom:8px}
+.payment-amount{font-size:24px;font-weight:700;color:#A9E5BB;margin-bottom:8px}
+.payment-date{display:flex;align-items:center;gap:8px;font-size:14px;color:#4A4A4A;margin-bottom:12px}
+.date-icon{font-size:18px}
+.payment-actions{display:flex;gap:10px;justify-content:flex-end}
+.action-btn{width:45px;height:45px;border-radius:10px;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.btn-complete{background:#A9E5BB;color:white}
+.btn-edit{background:#5DA7E7;color:white}
+.btn-delete{background:#ff6b6b;color:white}
+.action-btn:disabled{opacity:.5;cursor:default;transform:none}
 
-        .logo-small {
-            width: 50px;
-            height: 50px;
-            background: #A9E5BB;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
+/* Modal */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;padding:20px}
+.modal.active{display:flex}
+.modal-content{background:white;border-radius:20px;padding:30px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-header{display:flex;align-items:center;margin-bottom:20px}
+.back-btn{font-size:30px;cursor:pointer;border:none;background:none;color:#4A4A4A;padding:0;margin-right:15px}
+.modal-title{font-size:20px;font-weight:600;color:#4A4A4A}
+.form-group{margin-bottom:18px}
+.form-label{display:block;color:#4A4A4A;font-size:14px;font-weight:600;margin-bottom:8px}
+.form-input,.form-select{width:100%;padding:12px;border-radius:10px;border:2px solid #F2F2F2;background:#F2F2F2}
+.form-input:focus,.form-select:focus{outline:none;border-color:#5DA7E7;background:white}
+.modal-actions{display:flex;gap:15px;margin-top:18px}
+.modal-btn{flex:1;padding:12px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer}
+.btn-save{background:#A9E5BB;color:white}
+.btn-cancel{background:#ff6b6b;color:white}
 
-        .logo-small:hover {
-            transform: scale(1.1);
-        }
+/* Toast */
+.toast{position:fixed;right:18px;bottom:18px;background:#333;color:#fff;padding:10px 14px;border-radius:10px;font-weight:700;opacity:0;transform:translateY(10px);transition:all .28s;z-index:2000}
+.toast.show{opacity:1;transform:translateY(0)}
 
-        /* Filtros */
-        .filters {
-            padding: 20px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 12px 24px;
-            border-radius: 20px;
-            border: none;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #FFFFFF;
-            color: #4A4A4A;
-        }
-
-        .filter-btn.active {
-            background: #5DA7E7;
-            color: white;
-        }
-
-        .filter-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .add-btn {
-            margin-left: auto;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #4A4A4A;
-            color: white;
-            font-size: 30px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(74, 74, 74, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .add-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(74, 74, 74, 0.5);
-        }
-
-        /* Lista de pagos */
-        .payments-container {
-            padding: 0 20px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .payment-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .payment-card:hover {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .payment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .payment-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #4A4A4A;
-        }
-
-        .payment-status {
-            padding: 6px 16px;
-            border-radius: 15px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .status-pending {
-            background: #5DA7E7;
-            color: white;
-        }
-
-        .status-paid {
-            background: #A9E5BB;
-            color: white;
-        }
-
-        .payment-type {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 12px;
-        }
-
-        .payment-amount {
-            font-size: 28px;
-            font-weight: 700;
-            color: #A9E5BB;
-            margin-bottom: 12px;
-        }
-
-        .payment-date {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #4A4A4A;
-            margin-bottom: 15px;
-        }
-
-        .date-icon {
-            font-size: 18px;
-        }
-
-        .payment-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-        }
-
-        .action-btn {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-complete {
-            background: #A9E5BB;
-            color: white;
-        }
-
-        .btn-edit {
-            background: #5DA7E7;
-            color: white;
-        }
-
-        .btn-delete {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .back-btn {
-            font-size: 30px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            color: #4A4A4A;
-            padding: 0;
-            margin-right: 15px;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #4A4A4A;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            color: #4A4A4A;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .form-input,
-        .form-select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #F2F2F2;
-            border-radius: 10px;
-            font-size: 15px;
-            color: #4A4A4A;
-            background: #F2F2F2;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus,
-        .form-select:focus {
-            outline: none;
-            border-color: #5DA7E7;
-            background: white;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-save {
-            background: #A9E5BB;
-            color: white;
-        }
-
-        .btn-cancel {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-title {
-                font-size: 16px;
-            }
-
-            .payment-title {
-                font-size: 18px;
-            }
-
-            .payment-amount {
-                font-size: 24px;
-            }
-
-            .modal-content {
-                padding: 20px;
-            }
-
-            .modal-actions {
-                flex-direction: column;
-            }
-        }
-    </style>
+@media (max-width:768px){
+  .filter-btn{padding:10px 14px}
+  .payment-amount{font-size:20px}
+}
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="header-left">
-            <button class="menu-btn" onclick="window.location.href='home.html'">☰</button>
-            <div class="header-title">
-                <span>💳</span>
-                <span>Pagos</span>
-            </div>
-        </div>
-        <div class="logo-small" onclick="window.location.href='home.html'">
-            <img src="logo.png" alt="Homi" style="width: 70%; height: 70%; object-fit: contain; border-radius: 50%;">
-        </div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <button class="menu-btn" onclick="window.location.href='home.html'">☰</button>
+    <div class="header-title">💳 Pagos</div>
+  </div>
+  <div class="logo-small" onclick="window.location.href='home.html'"><img src="logo.png" style="width:70%;height:70%;border-radius:50%"></div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <button class="filter-btn active" data-filter="todos">Todos</button>
+  <button class="filter-btn" data-filter="pendientes">Pendientes</button>
+  <button class="filter-btn" data-filter="pagados">Pagados</button>
+  <button class="filter-btn" data-filter="por-vencer">Por vencer</button>
+  <button class="add-btn" id="openAdd">+</button>
+</div>
+
+<!-- CONTADOR -->
+<div id="contadorPagos">Cargando...</div>
+
+<!-- PAYMENTS LIST -->
+<div class="payments-container" id="paymentsContainer"></div>
+
+<!-- MODAL -->
+<div class="modal" id="paymentModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button class="back-btn" onclick="closeModal()">←</button>
+      <div class="modal-title" id="modalTitle">Nuevo pago</div>
     </div>
 
-    <!-- Filtros -->
-    <div class="filters">
-        <button class="filter-btn active" data-filter="todos">Todos</button>
-        <button class="filter-btn" data-filter="pendientes">Pendientes</button>
-        <button class="filter-btn" data-filter="pagados">Pagados</button>
-        <button class="add-btn" onclick="openModal()">+</button>
-    </div>
+    <form id="paymentForm">
+      <div class="form-group">
+        <label class="form-label">Nombre del servicio *</label>
+        <input id="inputTitle" class="form-input" required />
+      </div>
 
-    <!-- Lista de pagos -->
-    <div class="payments-container" id="paymentsContainer">
-        <!-- Pago pendiente -->
-        <div class="payment-card" data-status="pendiente">
-            <div class="payment-header">
-                <div class="payment-title">Luz CFE</div>
-                <div class="payment-status status-pending">Pendiente</div>
-            </div>
-            <div class="payment-type">Servicio</div>
-            <div class="payment-amount">$600</div>
-            <div class="payment-date">
-                <span class="date-icon">📅</span>
-                <span>Vence: 15/12/2024</span>
-            </div>
-            <div class="payment-actions">
-                <button class="action-btn btn-complete" title="Marcar como pagado">✓</button>
-                <button class="action-btn btn-edit" onclick="openModal()">✎</button>
-                <button class="action-btn btn-delete">✗</button>
-            </div>
-        </div>
+      <div class="form-group">
+        <label class="form-label">Monto *</label>
+        <input id="inputAmount" type="number" step="0.01" class="form-input" required />
+      </div>
 
-        <!-- Pago pagado -->
-        <div class="payment-card" data-status="pagado">
-            <div class="payment-header">
-                <div class="payment-title">Netflix</div>
-                <div class="payment-status status-paid">Pagado</div>
-            </div>
-            <div class="payment-type">Suscripción</div>
-            <div class="payment-amount">$600</div>
-            <div class="payment-date">
-                <span class="date-icon">📅</span>
-                <span>Vence: 20/12/2024</span>
-            </div>
-            <div class="payment-actions">
-                <button class="action-btn btn-complete" title="Marcar como pagado" disabled style="opacity: 0.5;">✓</button>
-                <button class="action-btn btn-edit" onclick="openModal()">✎</button>
-                <button class="action-btn btn-delete">✗</button>
-            </div>
-        </div>
-    </div>
+      <div class="form-group">
+        <label class="form-label">Fecha de vencimiento *</label>
+        <input id="inputDueDate" type="date" class="form-input" required />
+      </div>
 
-    <!-- Modal para agregar/editar pago -->
-    <div class="modal" id="paymentModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="back-btn" onclick="closeModal()">←</button>
-                <div class="modal-title">Nuevo pago</div>
-            </div>
+      <div class="form-group">
+        <label class="form-label">Frecuencia</label>
+        <select id="inputFrequency" class="form-select">
+          <option value="no">No</option>
+          <option value="diario">Diario</option>
+          <option value="2dias">Cada 2 días</option>
+          <option value="3dias">Cada 3 días</option>
+          <option value="4dias">Cada 4 días</option>
+          <option value="5dias">Cada 5 días</option>
+          <option value="6dias">Cada 6 días</option>
+          <option value="7dias">7 días</option>
+          <option value="10dias">10 días</option>
+          <option value="15dias">15 días</option>
+          <option value="20dias">20 días</option>
+          <option value="30dias">30 días</option>
 
-            <form id="paymentForm">
-                <div class="form-group">
-                    <label class="form-label">Nombre del servicio *</label>
-                    <input type="text" class="form-input" placeholder="Ej: Luz CFE" required>
-                </div>
+          <option value="semanal">Semanal</option>
+          <option value="bi-semanal">Cada 2 semanas</option>
+          <option value="tri-semanal">Cada 3 semanas</option>
 
-                <div class="form-group">
-                    <label class="form-label">Monto *</label>
-                    <input type="number" class="form-input" placeholder="$ 0.00" step="0.01" required>
-                </div>
+          <option value="mensual">Mensual</option>
+          <option value="bimestral">Bimestral</option>
+          <option value="trimestral">Trimestral</option>
+          <option value="cuatrimestral">Cuatrimestral</option>
+          <option value="semestral">Semestral</option>
+          <option value="anual">Anual</option>
 
-                <div class="form-group">
-                    <label class="form-label">Fecha de vencimiento *</label>
-                    <input type="date" class="form-input" required>
-                </div>
+          <option value="bienal">Cada 2 años</option>
+          <option value="quinquenal">Cada 5 años</option>
+        </select>
+      </div>
 
-                <div class="form-group">
-                    <label class="form-label">Repetir</label>
-                    <select class="form-select">
-                        <option value="no">No</option>
-                        <option value="mensual">Mensual</option>
-                        <option value="bimestral">Bimestral</option>
-                        <option value="trimestral">Trimestral</option>
-                        <option value="semestral">Semestral</option>
-                        <option value="anual">Anual</option>
-                    </select>
-                </div>
+      <div class="form-group">
+        <label class="form-label">Categoría</label>
+        <select id="inputCategory" class="form-select">
+          <option value="">Seleccionar categoría</option>
+          <option value="servicio">Servicio</option>
+          <option value="suscripcion">Suscripción</option>
+          <option value="educacion">Educación</option>
+          <option value="seguro">Seguro</option>
+          <option value="deuda">Deuda</option>
+          <option value="compras">Compras</option>
+        </select>
+      </div>
 
-                <div class="form-group">
-                    <label class="form-label">Categoría</label>
-                    <select class="form-select">
-                        <option value="">Seleccionar categoría</option>
-                        <option value="servicio">Servicio</option>
-                        <option value="suscripcion">Suscripción</option>
-                        <option value="educacion">Educación</option>
-                        <option value="seguro">Seguro</option>
-                        <option value="deuda">Deuda</option>
-                        <option value="compras">Compras</option>
-                    </select>
-                </div>
+      <div class="modal-actions">
+        <button type="submit" class="modal-btn btn-save">✓ Guardar</button>
+        <button type="button" id="cancelBtn" class="modal-btn btn-cancel">✗ Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-                <div class="modal-actions">
-                    <button type="submit" class="modal-btn btn-save">
-                        ✓ Guardar
-                    </button>
-                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">
-                        ✗ Cancelar
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+<!-- TOAST -->
+<div id="toast" class="toast">Guardado</div>
 
-    <script>
-        // Funciones del modal
-        function openModal() {
-            document.getElementById('paymentModal').classList.add('active');
+<!-- =================== SCRIPT (Firebase + Lógica) =================== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, query, where, onSnapshot,
+  doc, updateDoc, deleteDoc, getDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* ------------------ CONFIG FIREBASE ------------------ */
+const firebaseConfig = {
+  apiKey: "AIzaSyC_eDl442o_5UR1jburjFrBSzqLBC9bX2w",
+  authDomain: "homi-29ba2.firebaseapp.com",
+  projectId: "homi-29ba2",
+  storageBucket: "homi-29ba2.firebasestorage.app",
+  messagingSenderId: "1066841499256",
+  appId: "1:1066841499256:web:0095d2eec75241be3d6f8d",
+  measurementId: "G-5ZFW0LP6BC"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// export for other scripts if needed
+window.db = db;
+window.doc = doc;
+window.updateDoc = updateDoc;
+window.deleteDoc = deleteDoc;
+window.getDoc = getDoc;
+
+let currentUser = null;
+window.editingPaymentId = null;
+
+/* ---------- UTIL DATES ---------- */
+function formatDateDisplay(iso) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (isNaN(d)) return iso;
+  const dd = String(d.getDate()).padStart(2,"0");
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  const yy = d.getFullYear();
+  return `${dd}/${mm}/${yy}`;
+}
+function toInputDate(iso){
+  if(!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d)) return "";
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+
+/* ------------------ CALCULO SIGUIENTE FECHA (OPCIÓN C: corregir al último día disponible) ------------------ */
+function addMonthsCorrect(day, monthIndex, year, addM){
+  const targetMonth = monthIndex + addM;
+  const lastDay = new Date(year, targetMonth + 1, 0).getDate();
+  const finalDay = Math.min(day, lastDay);
+  return new Date(year, targetMonth, finalDay).toISOString();
+}
+
+function computeNextDueDate(currentIso, frequency){
+  if(!currentIso) return null;
+  const base = new Date(currentIso);
+  if (isNaN(base)) return null;
+
+  const f = (frequency||"").toString().toLowerCase();
+  const addDays = (n)=>{ const d=new Date(base); d.setDate(d.getDate()+n); return d.toISOString(); };
+
+  if (f === "diario") return addDays(1);
+  if (f === "2dias") return addDays(2);
+  if (f === "3dias") return addDays(3);
+  if (f === "4dias") return addDays(4);
+  if (f === "5dias") return addDays(5);
+  if (f === "6dias") return addDays(6);
+  if (f === "7dias" || f === "semanal") return addDays(7);
+  if (f === "10dias") return addDays(10);
+  if (f === "15dias") return addDays(15);
+  if (f === "20dias") return addDays(20);
+  if (f === "30dias") return addDays(30);
+
+  if (f === "bi-semanal") return addDays(14);
+  if (f === "tri-semanal") return addDays(21);
+
+  const day = base.getDate();
+  const month = base.getMonth();
+  const year = base.getFullYear();
+
+  if (f === "mensual") return addMonthsCorrect(day, month, year, 1);
+  if (f === "bimestral") return addMonthsCorrect(day, month, year, 2);
+  if (f === "trimestral") return addMonthsCorrect(day, month, year, 3);
+  if (f === "cuatrimestral") return addMonthsCorrect(day, month, year, 4);
+  if (f === "semestral") return addMonthsCorrect(day, month, year, 6);
+  if (f === "anual") return addMonthsCorrect(day, month, year, 12);
+
+  if (f === "bienal") return addMonthsCorrect(day, month, year, 24);
+  if (f === "quinquenal") return addMonthsCorrect(day, month, year, 60);
+
+  return null;
+}
+
+/* ------------------ TOAST ------------------ */
+const toast = document.getElementById("toast");
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(()=> toast.classList.remove("show"),2200);
+}
+
+/* ------------------ AUTH & LOAD ------------------ */
+onAuthStateChanged(auth, (user) => {
+  if(!user){
+    window.location.href = "index.html";
+    return;
+  }
+  currentUser = user;
+  loadPayments();
+});
+
+/* ---------- DOM refs ---------- */
+const container = document.getElementById("paymentsContainer");
+const modal = document.getElementById("paymentModal");
+const form = document.getElementById("paymentForm");
+const modalTitle = document.getElementById("modalTitle");
+const openAddBtn = document.getElementById("openAdd");
+const filterBtns = document.querySelectorAll(".filter-btn");
+
+/* ---------- load payments (realtime) ---------- */
+let latestPaymentsCache = [];
+
+function loadPayments(){
+  if(!currentUser) return;
+  const q = query(collection(db,"payments"), where("uid","==",currentUser.uid));
+  onSnapshot(q, (snapshot)=>{
+    const arr = [];
+    snapshot.forEach(d => arr.push({ id: d.id, ...d.data() }));
+    // sort by dueDate asc (nulls last), then by title
+    arr.sort((a,b)=>{
+      if(!a.dueDate && b.dueDate) return 1;
+      if(a.dueDate && !b.dueDate) return -1;
+      if(!a.dueDate && !b.dueDate) return (a.title||"").localeCompare(b.title||"");
+      return new Date(a.dueDate)-new Date(b.dueDate);
+    });
+    latestPaymentsCache = arr;
+    renderList(arr);
+    actualizarContador(arr); // <-- actualiza contador en cada snapshot
+  }, err=> console.error(err));
+}
+
+/* ---------- actualizar contador ---------- */
+function actualizarContador(arr) {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+
+  let pendientes = 0;
+  let pagados = 0;
+  let porVencer = 0;
+
+  arr.forEach(pago => {
+      if (pago.status === "pagado") {
+          pagados++;
+      } else {
+          pendientes++;
+          if (pago.dueDate) {
+              const due = new Date(pago.dueDate);
+              due.setHours(0, 0, 0, 0);
+              const diff = (due - now) / (1000 * 60 * 60 * 24);
+              if (diff >= 0 && diff <= 7) porVencer++;
+          }
+      }
+  });
+
+  const el = document.getElementById("contadorPagos");
+  if (el) el.textContent = `Pendientes: ${pendientes}   |   Pagados: ${pagados}   |   Por vencer: ${porVencer}`;
+}
+
+/* ---------- render ---------- */
+function renderList(items){
+  container.innerHTML = "";
+  const filter = document.querySelector(".filter-btn.active")?.dataset.filter || "todos";
+
+  const now = new Date(); now.setHours(0,0,0,0);
+
+  const filtered = items.filter(it=>{
+    if(filter === "todos") return true;
+    if(filter === "pendientes") return it.status !== "pagado";
+    if(filter === "pagados") return it.status === "pagado";
+    if(filter === "por-vencer"){
+      if(!it.dueDate) return false;
+      const d = new Date(it.dueDate); d.setHours(0,0,0,0);
+      const diff = (d - now)/(1000*60*60*24);
+      return diff >= 0 && diff <= 7 && it.status !== "pagado";
+    }
+    return true;
+  });
+
+  if(filtered.length === 0) {
+    container.innerHTML = `<div style="padding:20px;color:#666">No hay pagos</div>`;
+    return;
+  }
+
+  filtered.forEach(it=>{
+    const card = document.createElement("div");
+    card.className = "payment-card";
+    card.dataset.status = it.status || "pendiente";
+
+    const dueDisplay = it.dueDate ? formatDateDisplay(it.dueDate) : "—";
+    const amountDisplay = new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(it.amount || 0);
+
+    const statusClass = (it.status === "pagado") ? "status-paid" : "status-pending";
+    const statusText = (it.status === "pagado") ? "Pagado" : "Pendiente";
+
+    let extraNote = "";
+    if(it.dueDate && it.status !== "pagado"){
+      const d = new Date(it.dueDate); d.setHours(0,0,0,0);
+      if(d < now) extraNote = " (Vencido)";
+      else {
+        const diffDays = Math.ceil((d - now)/(1000*60*60*24));
+        if(diffDays <= 3) extraNote = ` (En ${diffDays} días)`;
+      }
+    }
+
+    card.innerHTML = `
+      <div class="payment-header">
+        <div class="payment-title">${escapeHtml(it.title)}${extraNote}</div>
+        <div class="payment-status ${statusClass}">${statusText}</div>
+      </div>
+
+      <div class="payment-type">${escapeHtml(it.category || '')}</div>
+      <div class="payment-amount">${amountDisplay}</div>
+      <div class="payment-date"><span class="date-icon">📅</span> <span>Vence: ${dueDisplay}</span></div>
+
+      <div class="payment-actions">
+        <button class="action-btn btn-complete" data-id="${it.id}" title="Marcar como pagado" ${it.status === 'pagado' ? 'disabled' : ''}>✓</button>
+        <button class="action-btn btn-edit" data-id="${it.id}" title="Editar">✎</button>
+        <button class="action-btn btn-delete" data-id="${it.id}" title="Eliminar">✗</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  attachCardEvents();
+}
+
+/* ---------- attach events ---------- */
+function attachCardEvents(){
+  // complete
+  document.querySelectorAll(".btn-complete").forEach(b=>{
+    b.onclick = async ()=>{
+      const id = b.dataset.id;
+      try {
+        const ref = doc(db,"payments",id);
+        const snap = await getDoc(ref);
+        if(!snap.exists()){ showToast("No encontrado"); return; }
+        const data = snap.data();
+
+        // mark original as pagado
+        await updateDoc(ref,{ status: "pagado", paidAt: new Date().toISOString() });
+
+        showToast("Pago registrado");
+
+        // if frequency != 'no', create next payment
+        if (data.frequency && data.frequency !== "no") {
+          const nextDue = computeNextDueDate(data.dueDate || new Date().toISOString(), data.frequency);
+          if (nextDue) {
+            const newDoc = {
+              title: data.title,
+              amount: data.amount,
+              dueDate: nextDue,
+              frequency: data.frequency,
+              category: data.category || "",
+              uid: currentUser.uid,
+              status: "pendiente",
+              createdAt: Date.now()
+            };
+            await addDoc(collection(db,"payments"), newDoc);
+            showToast("Siguiente pago programado");
+          }
         }
+      } catch(err){
+        console.error(err);
+        showToast("Error al marcar pagado");
+      }
+    };
+  });
 
-        function closeModal() {
-            document.getElementById('paymentModal').classList.remove('active');
-        }
+  // edit
+  document.querySelectorAll(".btn-edit").forEach(b=>{
+    b.onclick = async ()=>{
+      const id = b.dataset.id;
+      try {
+        const ref = doc(db,"payments",id);
+        const snap = await getDoc(ref);
+        if(!snap.exists()){ showToast("No encontrado"); return; }
+        const data = snap.data();
+        // fill form
+        document.getElementById("inputTitle").value = data.title || "";
+        document.getElementById("inputAmount").value = data.amount || "";
+        document.getElementById("inputDueDate").value = toInputDate(data.dueDate) || "";
+        document.getElementById("inputFrequency").value = data.frequency || "no";
+        document.getElementById("inputCategory").value = data.category || "";
+        // editing id
+        window.editingPaymentId = id;
+        modalTitle.textContent = "Editar pago";
+        modal.classList.add("active");
+      } catch(err){
+        console.error(err);
+        showToast("Error al cargar");
+      }
+    };
+  });
 
-        // Cerrar modal al hacer clic fuera
-        document.getElementById('paymentModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
+  // delete
+  document.querySelectorAll(".btn-delete").forEach(b=>{
+    b.onclick = async ()=>{
+      const id = b.dataset.id;
+      if(!confirm("Eliminar pago?")) return;
+      try {
+        await deleteDoc(doc(db,"payments",id));
+        showToast("Eliminado");
+      } catch(err){
+        console.error(err);
+        showToast("Error al eliminar");
+      }
+    };
+  });
+}
 
-        // Filtros
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                const filter = this.dataset.filter;
-                console.log('Filtrar por:', filter);
-                // Aquí irá la lógica de filtrado con Firebase
-            });
-        });
+/* ---------- filters ---------- */
+filterBtns.forEach(btn=>{
+  btn.onclick = ()=>{
+    filterBtns.forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    renderList(latestPaymentsCache);
+    actualizarContador(latestPaymentsCache);
+  };
+});
 
-        // Marcar como pagado
-        document.querySelectorAll('.btn-complete').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if (!this.disabled) {
-                    // Aquí se registrará el pago en Finanzas
-                    alert('Pago marcado como pagado y registrado en Finanzas (próximamente con Firebase)');
-                    
-                    // Cambiar estado visual
-                    const card = this.closest('.payment-card');
-                    const statusBadge = card.querySelector('.payment-status');
-                    statusBadge.textContent = 'Pagado';
-                    statusBadge.classList.remove('status-pending');
-                    statusBadge.classList.add('status-paid');
-                    this.disabled = true;
-                    this.style.opacity = '0.5';
-                }
-            });
-        });
+/* ---------- modal helpers ---------- */
+function resetPaymentForm() {
+  form.reset();
+  window.editingPaymentId = null;
+  modalTitle.textContent = "Nuevo pago";
+}
+function closeModal(){ 
+  modal.classList.remove("active");
+  resetPaymentForm();
+}
 
-        // Enviar formulario
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            console.log('Guardando pago...');
-            alert('Pago guardado (próximamente con Firebase)');
-            closeModal();
-        });
-    </script>
+/* modal open / close / create */
+openAddBtn.onclick = ()=>{
+  resetPaymentForm();
+  modalTitle.textContent = "Nuevo pago";
+  modal.classList.add("active");
+};
+document.getElementById("cancelBtn").addEventListener("click", ()=>{
+  closeModal();
+});
+
+/* close modal clicking outside */
+modal.addEventListener("click",(e)=>{ if(e.target === modal) closeModal(); });
+
+/* ---------- escape minimal ---------- */
+function escapeHtml(s){ if(!s) return ""; return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ---------- form submit create / update ---------- */
+form.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const title = document.getElementById("inputTitle").value.trim();
+  const amount = Number(document.getElementById("inputAmount").value) || 0;
+  const due = document.getElementById("inputDueDate").value;
+  const freq = document.getElementById("inputFrequency").value || "no";
+  const category = document.getElementById("inputCategory").value || "";
+
+  if(!title || !due){ showToast("Completa los campos obligatorios"); return; }
+
+  // convert due input to ISO (midnight local)
+  const parts = due.split("-");
+  const dueIso = new Date(Number(parts[0]), Number(parts[1])-1, Number(parts[2])).toISOString();
+
+  try {
+    if(window.editingPaymentId){
+      await updateDoc(doc(db,"payments",window.editingPaymentId), {
+        title, amount, dueDate: dueIso, frequency: freq, category
+      });
+      showToast("Actualizado");
+      window.editingPaymentId = null;
+    } else {
+      await addDoc(collection(db,"payments"), {
+        title, amount, dueDate: dueIso, frequency: freq, category,
+        uid: currentUser.uid, status: "pendiente", createdAt: Date.now()
+      });
+      showToast("Guardado");
+    }
+
+    // close & reset
+    closeModal();
+    // onSnapshot will refresh list and contador automatically
+  } catch(err){
+    console.error(err);
+    showToast("Error al guardar");
+  }
+});
+</script>
+
 </body>
 </html>
